@@ -1,0 +1,597 @@
+{% extends 'base.html' %}
+
+{% block title %}HawkEye — App Privilege Analyzer | Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Home Page Section Styles */
+    .section-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 60px 24px;
+    }
+
+    /* Badge Label */
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        color: #818cf8;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+    }
+
+    /* Hero Section */
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 48px;
+        align-items: center;
+        padding: 40px 0 80px;
+    }
+
+    .hero-title {
+        font-size: 3.4rem;
+        font-weight: 700;
+        line-height: 1.15;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 60%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -1px;
+    }
+
+    .hero-title .highlight {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        color: #94a3b8;
+        font-size: 1.15rem;
+        line-height: 1.65;
+        margin-bottom: 36px;
+        max-width: 540px;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        color: #ffffff;
+        padding: 14px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        text-decoration: none;
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+        transition: all 0.25 ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.5);
+        opacity: 0.95;
+    }
+
+    .btn-hero-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.05rem;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-hero-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.25);
+        color: #ffffff;
+    }
+
+    /* Hero Demo Visual Card */
+    .hero-preview-card {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        position: relative;
+    }
+
+    .card-header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 20px;
+    }
+
+    .card-app-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .card-app-icon {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 1rem;
+    }
+
+    .perm-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .perm-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        font-size: 0.9rem;
+    }
+
+    .perm-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .risk-tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .risk-high {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .risk-medium {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    /* Problem Statement Section */
+    .problem-section {
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 48px;
+        text-align: center;
+        margin: 40px auto;
+        max-width: 1000px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .problem-title {
+        font-size: 2.1rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: #ffffff;
+    }
+
+    .problem-text {
+        color: #94a3b8;
+        font-size: 1.08rem;
+        line-height: 1.7;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    /* How It Works Section */
+    .section-heading {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+
+    .section-title {
+        font-size: 2.3rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 12px;
+    }
+
+    .section-desc {
+        color: #94a3b8;
+        font-size: 1.05rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+    }
+
+    .step-card {
+        background: rgba(15, 23, 42, 0.75);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 36px 28px;
+        position: relative;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .step-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .step-num {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .step-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 12px;
+    }
+
+    .step-desc {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    /* Features Section Grid */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .feature-card {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 32px 24px;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+    }
+
+    .feature-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        background: rgba(99, 102, 241, 0.12);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #818cf8;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+
+    .feature-title {
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 10px;
+    }
+
+    .feature-desc {
+        color: #94a3b8;
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    /* CTA Section Banner */
+    .cta-banner {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(168, 85, 247, 0.12));
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 24px;
+        padding: 60px 36px;
+        text-align: center;
+        margin-top: 40px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-title {
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 14px;
+    }
+
+    .cta-subtitle {
+        color: #cbd5e1;
+        font-size: 1.1rem;
+        margin-bottom: 32px;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    @media (max-width: 992px) {
+        .hero-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 40px;
+        }
+
+        .hero-subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            justify-content: center;
+        }
+
+        .steps-grid, .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO SECTION -->
+<section class="section-wrapper">
+    <div class="hero-grid">
+        <div>
+            <div class="section-badge">
+                <i class="fa-solid fa-shield-halved"></i> Cybersecurity Privilege Analyzer
+            </div>
+            <h1 class="hero-title">
+                Know What Your Apps <span class="highlight">Really Access</span>
+            </h1>
+            <p class="hero-subtitle">
+                Stop permission creep. HawkEye automatically tracks Android app updates to detect newly added sensitive permissions — camera, mic, location, and contacts — before your data is exposed.
+            </p>
+            <div class="hero-actions">
+                <a href="/register" class="btn-hero-primary">
+                    <i class="fa-solid fa-rocket"></i> Get Started Free
+                </a>
+                <a href="#how-it-works" class="btn-hero-secondary">
+                    <i class="fa-solid fa-circle-play"></i> See How It Works
+                </a>
+            </div>
+        </div>
+
+        <!-- HERO DEMO CARD -->
+        <div class="hero-preview-card">
+            <div class="card-header-bar">
+                <div class="card-app-title">
+                    <div class="card-app-icon">🦅</div>
+                    <div>
+                        <div>SocialPhoto App</div>
+                        <div style="font-size: 0.78rem; color: #94a3b8; font-weight: 400;">Version 4.2.0 &bull; Update Scan</div>
+                    </div>
+                </div>
+                <div class="risk-tag risk-high">
+                    <i class="fa-solid fa-triangle-exclamation"></i> High Risk Flagged
+                </div>
+            </div>
+
+            <div class="perm-list">
+                <div class="perm-item">
+                    <div class="perm-info">
+                        <i class="fa-solid fa-microphone" style="color: #ef4444;"></i>
+                        <span>RECORD_AUDIO</span>
+                    </div>
+                    <span class="risk-tag risk-high">NEW &bull; HIGH</span>
+                </div>
+                <div class="perm-item">
+                    <div class="perm-info">
+                        <i class="fa-solid fa-location-dot" style="color: #f59e0b;"></i>
+                        <span>ACCESS_FINE_LOCATION</span>
+                    </div>
+                    <span class="risk-tag risk-medium">NEW &bull; MED</span>
+                </div>
+                <div class="perm-item">
+                    <div class="perm-info">
+                        <i class="fa-solid fa-address-book" style="color: #94a3b8;"></i>
+                        <span>READ_CONTACTS</span>
+                    </div>
+                    <span style="font-size: 0.78rem; color: #4ade80; font-family: 'JetBrains Mono';">UNCHANGED</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROBLEM STATEMENT SECTION -->
+<section class="section-wrapper">
+    <div class="problem-section">
+        <div class="section-badge">
+            <i class="fa-solid fa-triangle-exclamation"></i> The Hidden Risk
+        </div>
+        <h2 class="problem-title">Why Permission Creep Matters</h2>
+        <p class="problem-text">
+            When you first install an app, you review its permissions. But over dozens of routine background updates, apps quietly request broader access to your device. Most users never notice when an photo editing app suddenly gains background microphone access or contact list reading permissions. HawkEye exposes this invisible privilege escalation.
+        </p>
+    </div>
+</section>
+
+<!-- HOW IT WORKS SECTION -->
+<section class="section-wrapper" id="how-it-works">
+    <div class="section-heading">
+        <div class="section-badge">
+            <i class="fa-solid fa-list-check"></i> Simple Process
+        </div>
+        <h2 class="section-title">How HawkEye Works</h2>
+        <p class="section-desc">Audit permission changes in 3 simple steps</p>
+    </div>
+
+    <div class="steps-grid">
+        <div class="step-card">
+            <div class="step-num">1</div>
+            <h3 class="step-title">Add Your App</h3>
+            <p class="step-desc">
+                Enter your application name, category, and snapshot of current permissions when first installed.
+            </p>
+        </div>
+
+        <div class="step-card">
+            <div class="step-num">2</div>
+            <h3 class="step-title">Recheck After Updates</h3>
+            <p class="step-desc">
+                Whenever the app updates, re-enter or import the new permission snapshot for instant diffing.
+            </p>
+        </div>
+
+        <div class="step-card">
+            <div class="step-num">3</div>
+            <h3 class="step-title">Get Instant Analysis</h3>
+            <p class="step-desc">
+                HawkEye compares old vs new permissions and classifies newly introduced access by High, Medium, or Low risk level.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="section-wrapper" id="features">
+    <div class="section-heading">
+        <div class="section-badge">
+            <i class="fa-solid fa-shield-virus"></i> Powerful Capabilities
+        </div>
+        <h2 class="section-title">Security Features</h2>
+        <p class="section-desc">Built for thorough mobile application privilege auditing</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-code-compare"></i>
+            </div>
+            <h3 class="feature-title">Permission Diffing</h3>
+            <p class="feature-desc">
+                Automated delta analysis highlighting newly added, removed, or modified permissions across app versions.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <h3 class="feature-title">Risk-Based Flagging</h3>
+            <p class="feature-desc">
+                Intelligent risk scoring classifying camera, microphone, and location escalations as High, Medium, or Low risk.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <h3 class="feature-title">Real-World Baseline</h3>
+            <p class="feature-desc">
+                Cross-references app categories against Play Store baselines via google-play-scraper data.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-timeline"></i>
+            </div>
+            <h3 class="feature-title">Audit History Timeline</h3>
+            <p class="feature-desc">
+                Maintains a full timeline audit trail per application to track permission changes across its lifetime.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <h3 class="feature-title">Secure Authentication</h3>
+            <p class="feature-desc">
+                Bcrypt-backed password hashing and encrypted session storage for secure analyst management.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon-wrapper">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h3 class="feature-title">Instant Security Alerts</h3>
+            <p class="feature-desc">
+                Get immediate navbar badges and alerts when high-risk permission changes are detected in your monitored apps.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- CALL TO ACTION BANNER SECTION -->
+<section class="section-wrapper">
+    <div class="cta-banner">
+        <h2 class="cta-title">Start Tracking Your App Permissions Today</h2>
+        <p class="cta-subtitle">
+            Protect your privacy and ensure your mobile applications aren't silently escalating access privileges over routine updates.
+        </p>
+        <a href="/register" class="btn-hero-primary">
+            <i class="fa-solid fa-user-plus"></i> Sign Up Free
+        </a>
+    </div>
+</section>
+
+{% endblock %}
