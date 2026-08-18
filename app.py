@@ -1,7 +1,19 @@
+import os
 from flask import Flask, render_template, session, redirect, url_for, request
+from dotenv import load_dotenv
+from db import init_db, db, User, AppItem, AppPermission, Alert
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "hawkeye_cyber_security_secret_key_demo"
+app.secret_key = os.getenv("SECRET_KEY", "hawkeye_cyber_security_secret_key_demo")
+
+# Initialize Neon DB connection
+try:
+    init_db(app)
+    print("Database connection initialized successfully!")
+except Exception as e:
+    print(f"Database initialization warning: {e}")
 
 @app.route("/")
 def home():
