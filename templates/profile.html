@@ -1,0 +1,584 @@
+{% extends 'base.html' %}
+
+{% block title %}HawkEye — Profile Settings{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 1100px;
+        margin: 40px auto 60px;
+        padding: 0 24px;
+        width: 100%;
+    }
+
+    /* Header Profile Card */
+    .profile-header-card {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 32px;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-header-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+    }
+
+    .profile-user-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .profile-avatar-large {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        color: #ffffff;
+        font-size: 2rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .profile-details h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .profile-details p {
+        color: #94a3b8;
+        font-size: 0.95rem;
+    }
+
+    .role-badge {
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        color: #818cf8;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    /* Grid Layout */
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 32px;
+        align-items: start;
+    }
+
+    /* Cards */
+    .settings-card {
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        padding: 28px;
+        margin-bottom: 32px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-title-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .card-title-bar i {
+        color: #818cf8;
+        font-size: 1.2rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        color: #cbd5e1;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 16px;
+        color: #64748b;
+        font-size: 0.95rem;
+        pointer-events: none;
+    }
+
+    .form-input {
+        width: 100%;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 12px 16px 12px 44px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-family: inherit;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+
+    .form-input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        background: rgba(30, 41, 59, 0.85);
+    }
+
+    .toggle-password {
+        position: absolute;
+        right: 16px;
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 0.95rem;
+        padding: 0;
+        transition: color 0.2s ease;
+    }
+
+    .toggle-password:hover {
+        color: #cbd5e1;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        transition: all 0.25s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
+    }
+
+    .password-match-hint {
+        font-size: 0.8rem;
+        margin-top: 4px;
+        display: none;
+    }
+
+    .password-match-hint.valid {
+        display: block;
+        color: #34d399;
+    }
+
+    .password-match-hint.invalid {
+        display: block;
+        color: #f87171;
+    }
+
+    /* Activity Overview Stats */
+    .stat-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .stat-item {
+        background: rgba(30, 41, 59, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .stat-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+    }
+
+    .stat-label {
+        color: #94a3b8;
+        font-size: 0.85rem;
+    }
+
+    .stat-value {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #34d399;
+        font-size: 0.88rem;
+        font-weight: 500;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #34d399;
+        box-shadow: 0 0 10px #34d399;
+    }
+
+    @media (max-width: 868px) {
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-header-card {
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+    }
+
+    /* Clean Light Mode Overrides for Profile Page */
+    [data-theme="light"] .profile-header-card,
+    [data-theme="light"] .settings-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    [data-theme="light"] .profile-details h1,
+    [data-theme="light"] .card-title-bar,
+    [data-theme="light"] .stat-value {
+        color: #0f172a;
+    }
+
+    [data-theme="light"] .card-title-bar {
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    [data-theme="light"] .profile-details p,
+    [data-theme="light"] .stat-label,
+    [data-theme="light"] .form-label {
+        color: #475569;
+    }
+
+    [data-theme="light"] .form-input {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #0f172a;
+    }
+
+    [data-theme="light"] .form-input:focus {
+        background: #ffffff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    [data-theme="light"] .stat-item {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+    }
+
+    [data-theme="light"] .stat-icon {
+        background: #eef2ff;
+        color: #4f46e5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <!-- HEADER USER CARD -->
+    <div class="profile-header-card">
+        <div class="profile-user-info">
+            <div class="profile-avatar-large">
+                {{ user.username[0] | upper if user else 'U' }}
+            </div>
+            <div class="profile-details">
+                <h1>
+                    {{ user.username if user else 'Security Analyst' }}
+                    <span class="role-badge"><i class="fa-solid fa-shield-halved"></i> Analyst</span>
+                </h1>
+                <p><i class="fa-solid fa-envelope" style="color: #64748b; margin-right: 6px;"></i> {{ user.email if user else '' }}</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <a href="/logout" class="btn-save" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #f87171; box-shadow: none;">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN SETTINGS GRID -->
+    <div class="profile-grid">
+        <!-- LEFT COLUMN: FORMS -->
+        <div>
+            <!-- ACCOUNT DETAILS FORM -->
+            <div class="settings-card">
+                <div class="card-title-bar">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Account Details</span>
+                </div>
+
+                <form action="/profile" method="POST">
+                    <input type="hidden" name="action" value="update_profile">
+
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="username" name="username" class="form-input" required value="{{ user.username if user else '' }}">
+                            <i class="fa-solid fa-at input-icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" class="form-input" required value="{{ user.email if user else '' }}">
+                            <i class="fa-solid fa-envelope input-icon"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Profile Details
+                    </button>
+                </form>
+            </div>
+
+            <!-- CHANGE PASSWORD FORM -->
+            <div class="settings-card">
+                <div class="card-title-bar">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Security & Password</span>
+                </div>
+
+                <form action="/profile" method="POST" id="passwordForm">
+                    <input type="hidden" name="action" value="change_password">
+
+                    <div class="form-group">
+                        <label class="form-label" for="current_password">Current Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="current_password" name="current_password" class="form-input" placeholder="Enter current password" required>
+                            <i class="fa-solid fa-lock input-icon"></i>
+                            <button type="button" class="toggle-password" data-target="current_password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="new_password">New Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="new_password" name="new_password" class="form-input" placeholder="At least 6 characters" minlength="6" required>
+                            <i class="fa-solid fa-shield-keyhole input-icon"></i>
+                            <button type="button" class="toggle-password" data-target="new_password">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirm_new_password">Confirm New Password</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="confirm_new_password" name="confirm_new_password" class="form-input" placeholder="Re-enter new password" required>
+                            <i class="fa-solid fa-shield-check input-icon"></i>
+                        </div>
+                        <div class="password-match-hint" id="profileMatchHint"></div>
+                    </div>
+
+                    <button type="submit" class="btn-save" style="background: linear-gradient(135deg, #a855f7, #7c3aed); box-shadow: 0 6px 20px rgba(168, 85, 247, 0.3);">
+                        <i class="fa-solid fa-lock-hashtag"></i> Update Password
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: ACCOUNT OVERVIEW STATS -->
+        <div>
+            <div class="settings-card">
+                <div class="card-title-bar">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analyst Activity</span>
+                </div>
+
+                <div class="stat-list">
+                    <div class="stat-item">
+                        <div class="stat-info">
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-cubes"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Monitored Apps</div>
+                                <div class="stat-value">{{ app_count | default(0) }} Applications</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-info">
+                            <div class="stat-icon" style="background: rgba(239, 68, 68, 0.12); color: #f87171;">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Active Privilege Alerts</div>
+                                <div class="stat-value">{{ alert_count | default(0) }} High Risk</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-info">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.12); color: #34d399;">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Security Account Status</div>
+                                <div class="status-indicator">
+                                    <span class="status-dot"></span> Active & Encrypted
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-item">
+                        <div class="stat-info">
+                            <div class="stat-icon" style="background: rgba(168, 85, 247, 0.12); color: #c084fc;">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <div>
+                                <div class="stat-label">Analyst ID</div>
+                                <div class="stat-value" style="font-family: 'JetBrains Mono'; font-size: 0.9rem;">USR-{{ "%05d" | format(user.id if user else 1) }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle Password visibility for form buttons
+        const toggleButtons = document.querySelectorAll('.toggle-password');
+        toggleButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetInput = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+                if (targetInput && icon) {
+                    const isPassword = targetInput.type === 'password';
+                    targetInput.type = isPassword ? 'text' : 'password';
+                    icon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+                }
+            });
+        });
+
+        // Real-time new password matching
+        const newPasswordInput = document.getElementById('new_password');
+        const confirmPasswordInput = document.getElementById('confirm_new_password');
+        const matchHint = document.getElementById('profileMatchHint');
+        const passwordForm = document.getElementById('passwordForm');
+
+        function checkMatch() {
+            if (!confirmPasswordInput.value) {
+                matchHint.style.display = 'none';
+                return true;
+            }
+            if (newPasswordInput.value === confirmPasswordInput.value) {
+                matchHint.textContent = '✓ Passwords match';
+                matchHint.className = 'password-match-hint valid';
+                return true;
+            } else {
+                matchHint.textContent = '✕ Passwords do not match';
+                matchHint.className = 'password-match-hint invalid';
+                return false;
+            }
+        }
+
+        if (newPasswordInput && confirmPasswordInput) {
+            newPasswordInput.addEventListener('input', checkMatch);
+            confirmPasswordInput.addEventListener('input', checkMatch);
+        }
+
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                if (!checkMatch()) {
+                    e.preventDefault();
+                    confirmPasswordInput.focus();
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

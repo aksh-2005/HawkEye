@@ -10,6 +10,7 @@
     .bg-glow {
         position: absolute;
         width: 600px;
+        max-width: 100vw;
         height: 600px;
         background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
         top: -100px;
@@ -21,8 +22,15 @@
     }
 
     @keyframes pulseGlow {
-        0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-        100% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+        0% {
+            transform: translateX(-50%) scale(1);
+            opacity: 0.8;
+        }
+
+        100% {
+            transform: translateX(-50%) scale(1.2);
+            opacity: 1;
+        }
     }
 
     /* Sticky Navbar Header */
@@ -31,7 +39,7 @@
         top: 0;
         width: 100%;
         z-index: 1000;
-        background: rgba(15, 23, 42, 0.8);
+        background: rgba(15, 23, 42, 0.85);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -53,12 +61,13 @@
     .nav-brand {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         text-decoration: none;
+        user-select: none;
     }
 
     .nav-brand .icon {
-        font-size: 2rem;
+        font-size: 1.8rem;
         display: inline-block;
         background: linear-gradient(135deg, #6366f1, #a855f7);
         -webkit-background-clip: text;
@@ -72,7 +81,7 @@
     }
 
     .brand-name {
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: 700;
         background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
         -webkit-background-clip: text;
@@ -106,7 +115,8 @@
         gap: 8px;
     }
 
-    .nav-link:hover, .nav-link.active {
+    .nav-link:hover,
+    .nav-link.active {
         color: #ffffff;
     }
 
@@ -122,7 +132,8 @@
         border-radius: 2px;
     }
 
-    .nav-link:hover::after, .nav-link.active::after {
+    .nav-link:hover::after,
+    .nav-link.active::after {
         width: 100%;
     }
 
@@ -163,7 +174,8 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 9px 20px;
+        padding: 10px 20px;
+        min-height: 42px;
         border-radius: 12px;
         font-weight: 600;
         font-size: 0.9rem;
@@ -229,11 +241,13 @@
         cursor: pointer;
         font-size: 0.9rem;
         font-weight: 500;
+        min-height: 42px;
         transition: all 0.2s ease;
         user-select: none;
     }
 
-    .profile-trigger:hover, .profile-dropdown.open .profile-trigger {
+    .profile-trigger:hover,
+    .profile-dropdown.open .profile-trigger {
         background: rgba(255, 255, 255, 0.1);
         border-color: rgba(99, 102, 241, 0.4);
     }
@@ -258,6 +272,7 @@
         width: 200px;
         background: rgba(15, 23, 42, 0.95);
         backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 16px;
         padding: 8px 0;
@@ -272,7 +287,7 @@
 
     .dropdown-item {
         display: block;
-        padding: 10px 18px;
+        padding: 12px 18px;
         color: #94a3b8;
         text-decoration: none;
         font-size: 0.88rem;
@@ -288,7 +303,7 @@
         color: #f87171;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         margin-top: 4px;
-        padding-top: 10px;
+        padding-top: 12px;
     }
 
     .dropdown-item.logout:hover {
@@ -296,21 +311,166 @@
         color: #ef4444;
     }
 
-    /* Mobile Hamburger Menu */
+    /* Theme Toggle Button */
+    .theme-toggle-btn {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fbbf24;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.25s ease;
+        outline: none;
+    }
+
+    .theme-toggle-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+        transform: scale(1.1);
+        box-shadow: 0 0 15px rgba(251, 191, 36, 0.35);
+    }
+
+    /* Desktop Light Mode Component Overrides */
+    [data-theme="light"] .navbar-header {
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    [data-theme="light"] .brand-name {
+        background: linear-gradient(135deg, #0f172a 0%, #334155 100%) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+    }
+
+    [data-theme="light"] .nav-link {
+        color: #475569 !important;
+    }
+
+    [data-theme="light"] .nav-link:hover,
+    [data-theme="light"] .nav-link.active {
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .nav-link.active::after,
+    [data-theme="light"] .nav-link:hover::after {
+        background: linear-gradient(90deg, #4f46e5, #818cf8) !important;
+    }
+
+    [data-theme="light"] .theme-toggle-btn {
+        background: #f1f5f9 !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #4f46e5 !important;
+    }
+
+    [data-theme="light"] .theme-toggle-btn:hover {
+        background: #e2e8f0 !important;
+        box-shadow: 0 0 15px rgba(79, 70, 229, 0.25) !important;
+    }
+
+    [data-theme="light"] .profile-trigger {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .profile-trigger:hover,
+    [data-theme="light"] .profile-dropdown.open .profile-trigger {
+        background: #f1f5f9 !important;
+        border-color: #94a3b8 !important;
+    }
+
+    [data-theme="light"] .avatar-circle {
+        background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+        color: #ffffff !important;
+    }
+
+    [data-theme="light"] .dropdown-menu {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    [data-theme="light"] .dropdown-item {
+        color: #334155 !important;
+    }
+
+    [data-theme="light"] .dropdown-item:hover {
+        background: #f1f5f9 !important;
+        color: #4f46e5 !important;
+    }
+
+    [data-theme="light"] .dropdown-item.logout {
+        border-top: 1px solid #e2e8f0 !important;
+        color: #ef4444 !important;
+    }
+
+    [data-theme="light"] .dropdown-item.logout:hover {
+        background: #fef2f2 !important;
+        color: #b91c1c !important;
+    }
+
+    [data-theme="light"] .mobile-toggle {
+        background: rgba(0, 0, 0, 0.05) !important;
+        border-color: rgba(0, 0, 0, 0.12) !important;
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .btn-secondary {
+        background: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        color: #334155 !important;
+    }
+
+    [data-theme="light"] .btn-secondary:hover {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+    }
+
+    /* Mobile Hamburger Menu Button */
     .mobile-toggle {
         display: none;
-        background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         color: #e2e8f0;
-        font-size: 1.4rem;
-        padding: 6px 12px;
-        border-radius: 8px;
+        font-size: 1.25rem;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 12px;
         cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-toggle:hover,
+    .mobile-toggle:focus {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(99, 102, 241, 0.4);
+        color: #ffffff;
+    }
+
+    @media (max-width: 576px) {
+        .navbar {
+            padding: 12px 16px;
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+        }
+
+        .nav-brand .icon {
+            font-size: 1.5rem;
+        }
     }
 
     @media (max-width: 868px) {
         .mobile-toggle {
-            display: block;
+            display: inline-flex;
         }
 
         .nav-content {
@@ -318,31 +478,68 @@
             top: 100%;
             left: 0;
             width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 24px;
+            max-height: calc(100vh - 70px);
+            overflow-y: auto;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 20px 20px 24px;
             flex-direction: column;
             align-items: stretch;
             gap: 20px;
             display: none;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .nav-content.active {
             display: flex;
+            animation: slideDown 0.25s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .nav-menu {
             flex-direction: column;
             align-items: stretch;
-            gap: 12px;
+            gap: 8px;
+        }
+
+        .nav-link {
+            padding: 12px 16px;
+            width: 100%;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            justify-content: space-between;
+        }
+
+        .nav-link::after {
+            display: none;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .nav-actions {
             flex-direction: column;
             align-items: stretch;
             gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .btn {
@@ -357,6 +554,8 @@
         .profile-trigger {
             justify-content: space-between;
             width: 100%;
+            padding: 10px 16px;
+            border-radius: 12px;
         }
 
         .dropdown-menu {
@@ -364,6 +563,52 @@
             width: 100%;
             box-shadow: none;
             margin-top: 8px;
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Mobile Light Mode Overrides */
+        [data-theme="light"] .nav-content {
+            background: rgba(255, 255, 255, 0.98) !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        [data-theme="light"] .nav-link {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
+        }
+
+        [data-theme="light"] .nav-link:hover,
+        [data-theme="light"] .nav-link.active {
+            background: rgba(99, 102, 241, 0.1) !important;
+            border-color: rgba(99, 102, 241, 0.25) !important;
+            color: #4f46e5 !important;
+        }
+
+        [data-theme="light"] .nav-actions {
+            border-top: 1px solid #e2e8f0 !important;
+        }
+
+        [data-theme="light"] .profile-trigger {
+            background: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+
+        [data-theme="light"] .dropdown-menu {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+        }
+
+        [data-theme="light"] .dropdown-item {
+            color: #334155 !important;
+        }
+
+        [data-theme="light"] .dropdown-item:hover {
+            background: #e2e8f0 !important;
+            color: #4f46e5 !important;
         }
     }
 </style>
@@ -374,12 +619,14 @@
     <nav class="navbar">
         <!-- Logo / Brand with original icon style -->
         <a href="/" class="nav-brand">
-            <span class="icon">🦅</span>
             <span class="brand-name">HawkEye</span>
+            <span class="icon">🦅</span>
         </a>
 
         <!-- Mobile Menu Toggle Button -->
-        <button class="mobile-toggle" id="navToggleBtn" aria-label="Toggle menu">☰</button>
+        <button class="mobile-toggle" id="navToggleBtn" aria-label="Toggle navigation menu">
+            <i class="fa-solid fa-bars" id="navToggleIcon"></i>
+        </button>
 
         <!-- Nav Content -->
         <div class="nav-content" id="navContent">
@@ -388,94 +635,164 @@
             {% set unread_flags = unread_alerts | default(session.get('unread_alerts', 0)) %}
 
             {% if user_logged_in %}
-                <!-- LOGGED-IN USER NAVBAR -->
-                <ul class="nav-menu">
-                    <li>
-                        <a href="/dashboard" class="nav-link {% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="/my-apps" class="nav-link {% if active == 'my_apps' %}active{% endif %}">My Apps</a>
-                    </li>
-                    <li>
-                        <a href="/alerts" class="nav-link {% if active == 'alerts' %}active{% endif %} {% if unread_flags and unread_flags > 0 %}has-alerts{% endif %}">
-                            Alerts
-                            {% if unread_flags and unread_flags > 0 %}
-                                <span class="alert-badge">{{ unread_flags }}</span>
-                            {% endif %}
-                        </a>
-                    </li>
-                </ul>
+            <!-- LOGGED-IN USER NAVBAR -->
+            <ul class="nav-menu">
+                <li>
+                    <a href="/dashboard" class="nav-link {% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
+                </li>
+                <li>
+                    <a href="/my-apps" class="nav-link {% if active == 'my_apps' %}active{% endif %}">My Apps</a>
+                </li>
+                <li>
+                    <a href="/alerts"
+                        class="nav-link {% if active == 'alerts' %}active{% endif %} {% if unread_flags and unread_flags > 0 %}has-alerts{% endif %}">
+                        <span>Alerts</span>
+                        {% if unread_flags and unread_flags > 0 %}
+                        <span class="alert-badge">{{ unread_flags }}</span>
+                        {% endif %}
+                    </a>
+                </li>
+            </ul>
 
-                <div class="nav-actions">
-                    <!-- Add App Button -->
-                    <a href="/apps/add" class="btn btn-add">+ Add App</a>
+            <div class="nav-actions">
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Mode">
+                    <i class="fa-solid fa-sun" id="themeToggleIcon"></i>
+                </button>
 
-                    <!-- Profile Dropdown -->
-                    <div class="profile-dropdown" id="profileDropdown">
-                        <div class="profile-trigger" id="profileTrigger">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div class="avatar-circle">
-                                    {{ session.get('user_name', 'U')[0] | upper }}
-                                </div>
-                                <span>{{ session.get('user_name', 'User') }}</span>
+                <!-- Add App Button -->
+                <a href="/apps/add" class="btn btn-add">+ Add App</a>
+
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-trigger" id="profileTrigger">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div class="avatar-circle">
+                                {{ session.get('user_name', 'U')[0] | upper }}
                             </div>
-                            <span style="font-size: 0.7rem;">▼</span>
+                            <span>{{ session.get('user_name', 'User') }}</span>
                         </div>
+                        <span style="font-size: 0.7rem; color: #94a3b8;">▼</span>
+                    </div>
 
-                        <div class="dropdown-menu">
-                            <a href="/profile" class="dropdown-item">Account Settings</a>
-                            <a href="/logout" class="dropdown-item logout">Logout</a>
-                        </div>
+                    <div class="dropdown-menu">
+                        <a href="/profile" class="dropdown-item">Account Settings</a>
+                        <a href="/logout" class="dropdown-item logout">Logout</a>
                     </div>
                 </div>
+            </div>
 
             {% else %}
-                <!-- GUEST USER NAVBAR -->
-                <ul class="nav-menu">
-                    <li>
-                        <a href="/" class="nav-link {% if active == 'home' %}active{% endif %}">Home</a>
-                    </li>
-                    <li>
-                        <a href="/about" class="nav-link {% if active == 'about' %}active{% endif %}">About / How it Works</a>
-                    </li>
-                </ul>
+            <!-- GUEST USER NAVBAR -->
+            <ul class="nav-menu">
+                <li>
+                    <a href="/" class="nav-link {% if active == 'home' %}active{% endif %}">Home</a>
+                </li>
+                <li>
+                    <a href="/about" class="nav-link {% if active == 'about' %}active{% endif %}">About / How it
+                        Works</a>
+                </li>
+            </ul>
 
-                <div class="nav-actions">
-                    <a href="/login" class="btn btn-secondary">Login</a>
-                    <a href="/register" class="btn btn-primary">Sign Up</a>
-                </div>
+            <div class="nav-actions">
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtnGuest" title="Toggle Light/Dark Mode">
+                    <i class="fa-solid fa-sun" id="themeToggleIconGuest"></i>
+                </button>
+
+                <a href="/login" class="btn btn-secondary">Login</a>
+                <a href="/register" class="btn btn-primary">Sign Up</a>
+            </div>
             {% endif %}
         </div>
     </nav>
 </header>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Mobile Toggle
+    document.addEventListener('DOMContentLoaded', function () {
         const toggleBtn = document.getElementById('navToggleBtn');
+        const toggleIcon = document.getElementById('navToggleIcon');
         const navContent = document.getElementById('navContent');
-        if (toggleBtn && navContent) {
-            toggleBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navContent.classList.toggle('active');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const profileTrigger = document.getElementById('profileTrigger');
+
+        // Theme Toggle Functionality
+        const themeBtns = [document.getElementById('themeToggleBtn'), document.getElementById('themeToggleBtnGuest')].filter(Boolean);
+        const themeIcons = [document.getElementById('themeToggleIcon'), document.getElementById('themeToggleIconGuest')].filter(Boolean);
+
+        function updateThemeUI(theme) {
+            themeIcons.forEach(icon => {
+                if (theme === 'light') {
+                    icon.className = 'fa-solid fa-moon';
+                } else {
+                    icon.className = 'fa-solid fa-sun';
+                }
+            });
+            themeBtns.forEach(btn => {
+                btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
             });
         }
 
-        // Profile Dropdown Toggle
-        const profileDropdown = document.getElementById('profileDropdown');
-        const profileTrigger = document.getElementById('profileTrigger');
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        updateThemeUI(currentTheme);
+
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+                const newTheme = isLight ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('hawkeye_theme', newTheme);
+                updateThemeUI(newTheme);
+            });
+        });
+
+        function updateToggleIcon() {
+            if (!toggleIcon) return;
+            if (navContent && navContent.classList.contains('active')) {
+                toggleIcon.className = 'fa-solid fa-xmark';
+            } else {
+                toggleIcon.className = 'fa-solid fa-bars';
+            }
+        }
+
+        if (toggleBtn && navContent) {
+            toggleBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                navContent.classList.toggle('active');
+                updateToggleIcon();
+            });
+        }
+
         if (profileDropdown && profileTrigger) {
-            profileTrigger.addEventListener('click', function(e) {
+            profileTrigger.addEventListener('click', function (e) {
                 e.stopPropagation();
                 profileDropdown.classList.toggle('open');
             });
         }
 
-        // Close on click outside
-        document.addEventListener('click', function(e) {
+        // Close dropdowns/menus on click outside
+        document.addEventListener('click', function (e) {
             if (profileDropdown && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('open');
             }
+            if (navContent && toggleBtn && !navContent.contains(e.target) && !toggleBtn.contains(e.target)) {
+                navContent.classList.remove('active');
+                updateToggleIcon();
+            }
         });
+
+        // Close mobile nav when clicking nav links
+        if (navContent) {
+            const navLinks = navContent.querySelectorAll('.nav-link, .btn, .dropdown-item');
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 868) {
+                        navContent.classList.remove('active');
+                        updateToggleIcon();
+                    }
+                });
+            });
+        }
     });
 </script>
