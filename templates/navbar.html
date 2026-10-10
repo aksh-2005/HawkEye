@@ -1,36 +1,9 @@
-<!-- HawkEye - Reusable Navigation Bar Partial -->
+<!-- HawkEye - Clean Navigation Bar Partial -->
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-    }
-
-    /* Ambient Background Glow */
-    .bg-glow {
-        position: absolute;
-        width: 600px;
-        max-width: 100vw;
-        height: 600px;
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
-        top: -100px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 0;
-        pointer-events: none;
-        animation: pulseGlow 8s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-        0% {
-            transform: translateX(-50%) scale(1);
-            opacity: 0.8;
-        }
-
-        100% {
-            transform: translateX(-50%) scale(1.2);
-            opacity: 1;
-        }
     }
 
     /* Sticky Navbar Header */
@@ -39,11 +12,8 @@
         top: 0;
         width: 100%;
         z-index: 1000;
-        background: rgba(15, 23, 42, 0.85);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        background: #0f172a;
+        border-bottom: 1px solid #1e293b;
         font-family: 'Outfit', sans-serif;
     }
 
@@ -53,39 +23,29 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 16px 24px;
+        padding: 14px 24px;
         position: relative;
     }
 
-    /* Brand Logo with Original Eagle Icon */
+    /* Brand Logo */
     .nav-brand {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         text-decoration: none;
         user-select: none;
     }
 
     .nav-brand .icon {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         display: inline-block;
-        background: linear-gradient(135deg, #6366f1, #a855f7);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        line-height: 1;
-        transition: transform 0.3s ease;
-    }
-
-    .nav-brand:hover .icon {
-        transform: rotate(-5deg) scale(1.1);
+        color: #6366f1;
     }
 
     .brand-name {
-        font-size: 1.35rem;
+        font-size: 1.3rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #ffffff;
         letter-spacing: -0.5px;
     }
 
@@ -93,73 +53,30 @@
     .nav-content {
         display: flex;
         align-items: center;
-        gap: 32px;
+        gap: 28px;
     }
 
     .nav-menu {
         display: flex;
         align-items: center;
-        gap: 24px;
+        gap: 20px;
         list-style: none;
     }
 
     .nav-link {
         color: #94a3b8;
         text-decoration: none;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 500;
-        transition: all 0.2s ease;
-        position: relative;
+        transition: color 0.2s ease;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .nav-link:hover,
     .nav-link.active {
         color: #ffffff;
-    }
-
-    .nav-link::after {
-        content: '';
-        position: absolute;
-        bottom: -6px;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background: linear-gradient(90deg, #6366f1, #a855f7);
-        transition: width 0.3s ease;
-        border-radius: 2px;
-    }
-
-    .nav-link:hover::after,
-    .nav-link.active::after {
-        width: 100%;
-    }
-
-    /* Highlighted Alerts Nav Link */
-    .nav-link.has-alerts {
-        color: #ef4444;
-        font-weight: 600;
-    }
-
-    .nav-link.has-alerts::after {
-        background: linear-gradient(90deg, #ef4444, #f59e0b);
-    }
-
-    .alert-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 18px;
-        height: 18px;
-        padding: 0 5px;
-        border-radius: 10px;
-        background: #ef4444;
-        color: #ffffff;
-        font-size: 0.75rem;
-        font-weight: 700;
-        box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
     }
 
     /* Action Buttons */
@@ -174,54 +91,36 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 10px 20px;
-        min-height: 42px;
-        border-radius: 12px;
+        padding: 8px 18px;
+        min-height: 38px;
+        border-radius: 8px;
         font-weight: 600;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         text-decoration: none;
         transition: all 0.2s ease;
         cursor: pointer;
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, #6366f1, #4f46e5);
+        background: #4f46e5;
         color: #ffffff;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         border: none;
     }
 
     .btn-primary:hover {
-        opacity: 0.95;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
-        transform: translateY(-1px);
+        background: #4338ca;
+        color: #ffffff;
     }
 
     .btn-secondary {
-        background: rgba(255, 255, 255, 0.05);
+        background: #1e293b;
         color: #e2e8f0;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid #334155;
     }
 
     .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
+        background: #334155;
         color: #ffffff;
-    }
-
-    .btn-add {
-        background: rgba(99, 102, 241, 0.15);
-        color: #818cf8;
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        padding: 8px 16px;
-        border-radius: 10px;
-        font-size: 0.88rem;
-    }
-
-    .btn-add:hover {
-        background: linear-gradient(135deg, #6366f1, #4f46e5);
-        color: #ffffff;
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
     }
 
     /* Profile Dropdown */
@@ -232,51 +131,49 @@
     .profile-trigger {
         display: flex;
         align-items: center;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 6px 14px 6px 8px;
+        gap: 8px;
+        background: #1e293b;
+        border: 1px solid #334155;
+        padding: 5px 12px 5px 8px;
         border-radius: 20px;
         color: #e2e8f0;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 500;
-        min-height: 42px;
+        min-height: 38px;
         transition: all 0.2s ease;
         user-select: none;
     }
 
     .profile-trigger:hover,
     .profile-dropdown.open .profile-trigger {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(99, 102, 241, 0.4);
+        border-color: #6366f1;
+        color: #ffffff;
     }
 
     .avatar-circle {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #6366f1, #a855f7);
+        background: #4f46e5;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #ffffff;
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .dropdown-menu {
         position: absolute;
-        top: calc(100% + 12px);
+        top: calc(100% + 8px);
         right: 0;
-        width: 200px;
-        background: rgba(15, 23, 42, 0.95);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 8px 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        width: 190px;
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 6px 0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         display: none;
         z-index: 1001;
     }
@@ -287,23 +184,23 @@
 
     .dropdown-item {
         display: block;
-        padding: 12px 18px;
+        padding: 10px 16px;
         color: #94a3b8;
         text-decoration: none;
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         transition: all 0.2s ease;
     }
 
     .dropdown-item:hover {
         color: #ffffff;
-        background: rgba(255, 255, 255, 0.06);
+        background: #1e293b;
     }
 
     .dropdown-item.logout {
         color: #f87171;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid #1e293b;
         margin-top: 4px;
-        padding-top: 12px;
+        padding-top: 10px;
     }
 
     .dropdown-item.logout:hover {
@@ -313,38 +210,33 @@
 
     /* Theme Toggle Button */
     .theme-toggle-btn {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: #1e293b;
+        border: 1px solid #334155;
         color: #fbbf24;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        font-size: 1rem;
-        transition: all 0.25s ease;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
         outline: none;
     }
 
     .theme-toggle-btn:hover {
-        background: rgba(255, 255, 255, 0.18);
-        transform: scale(1.1);
-        box-shadow: 0 0 15px rgba(251, 191, 36, 0.35);
+        background: #334155;
     }
 
     /* Desktop Light Mode Component Overrides */
     [data-theme="light"] .navbar-header {
         background: #ffffff !important;
-        border-bottom: 1px solid #e2e8f0 !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+        border-bottom-color: #e2e8f0 !important;
     }
 
     [data-theme="light"] .brand-name {
-        background: linear-gradient(135deg, #0f172a 0%, #334155 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
+        color: #0f172a !important;
     }
 
     [data-theme="light"] .nav-link {
@@ -353,46 +245,25 @@
 
     [data-theme="light"] .nav-link:hover,
     [data-theme="light"] .nav-link.active {
-        color: #0f172a !important;
-    }
-
-    [data-theme="light"] .nav-link.active::after,
-    [data-theme="light"] .nav-link:hover::after {
-        background: linear-gradient(90deg, #4f46e5, #818cf8) !important;
+        color: #4f46e5 !important;
     }
 
     [data-theme="light"] .theme-toggle-btn {
         background: #f1f5f9 !important;
-        border: 1px solid #cbd5e1 !important;
+        border-color: #cbd5e1 !important;
         color: #4f46e5 !important;
-    }
-
-    [data-theme="light"] .theme-toggle-btn:hover {
-        background: #e2e8f0 !important;
-        box-shadow: 0 0 15px rgba(79, 70, 229, 0.25) !important;
     }
 
     [data-theme="light"] .profile-trigger {
         background: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
+        border-color: #cbd5e1 !important;
         color: #0f172a !important;
-    }
-
-    [data-theme="light"] .profile-trigger:hover,
-    [data-theme="light"] .profile-dropdown.open .profile-trigger {
-        background: #f1f5f9 !important;
-        border-color: #94a3b8 !important;
-    }
-
-    [data-theme="light"] .avatar-circle {
-        background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-        color: #ffffff !important;
     }
 
     [data-theme="light"] .dropdown-menu {
         background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+        border-color: #e2e8f0 !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
     }
 
     [data-theme="light"] .dropdown-item {
@@ -405,19 +276,8 @@
     }
 
     [data-theme="light"] .dropdown-item.logout {
-        border-top: 1px solid #e2e8f0 !important;
+        border-top-color: #e2e8f0 !important;
         color: #ef4444 !important;
-    }
-
-    [data-theme="light"] .dropdown-item.logout:hover {
-        background: #fef2f2 !important;
-        color: #b91c1c !important;
-    }
-
-    [data-theme="light"] .mobile-toggle {
-        background: rgba(0, 0, 0, 0.05) !important;
-        border-color: rgba(0, 0, 0, 0.12) !important;
-        color: #0f172a !important;
     }
 
     [data-theme="light"] .btn-secondary {
@@ -434,38 +294,16 @@
     /* Mobile Hamburger Menu Button */
     .mobile-toggle {
         display: none;
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #1e293b;
+        border: 1px solid #334155;
         color: #e2e8f0;
-        font-size: 1.25rem;
-        min-width: 44px;
-        min-height: 44px;
-        border-radius: 12px;
+        font-size: 1.1rem;
+        min-width: 38px;
+        min-height: 38px;
+        border-radius: 8px;
         cursor: pointer;
         align-items: center;
         justify-content: center;
-        transition: all 0.2s ease;
-    }
-
-    .mobile-toggle:hover,
-    .mobile-toggle:focus {
-        background: rgba(255, 255, 255, 0.12);
-        border-color: rgba(99, 102, 241, 0.4);
-        color: #ffffff;
-    }
-
-    @media (max-width: 576px) {
-        .navbar {
-            padding: 12px 16px;
-        }
-
-        .brand-name {
-            font-size: 1.2rem;
-        }
-
-        .nav-brand .icon {
-            font-size: 1.5rem;
-        }
     }
 
     @media (max-width: 868px) {
@@ -478,73 +316,41 @@
             top: 100%;
             left: 0;
             width: 100%;
-            max-height: calc(100vh - 70px);
-            overflow-y: auto;
-            background: rgba(15, 23, 42, 0.96);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-            padding: 20px 20px 24px;
+            background: #0f172a;
+            border-bottom: 1px solid #1e293b;
+            padding: 16px 20px;
             flex-direction: column;
             align-items: stretch;
-            gap: 20px;
+            gap: 16px;
             display: none;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
         .nav-content.active {
             display: flex;
-            animation: slideDown 0.25s ease forwards;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .nav-menu {
             flex-direction: column;
             align-items: stretch;
-            gap: 8px;
+            gap: 6px;
         }
 
         .nav-link {
-            padding: 12px 16px;
-            width: 100%;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            justify-content: space-between;
-        }
-
-        .nav-link::after {
-            display: none;
+            padding: 10px 12px;
+            border-radius: 6px;
         }
 
         .nav-link:hover,
         .nav-link.active {
-            background: rgba(99, 102, 241, 0.12);
-            border-color: rgba(99, 102, 241, 0.3);
+            background: #1e293b;
         }
 
         .nav-actions {
             flex-direction: column;
             align-items: stretch;
-            gap: 10px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .btn {
-            width: 100%;
-            text-align: center;
+            gap: 8px;
+            padding-top: 10px;
+            border-top: 1px solid #1e293b;
         }
 
         .profile-dropdown {
@@ -554,152 +360,113 @@
         .profile-trigger {
             justify-content: space-between;
             width: 100%;
-            padding: 10px 16px;
-            border-radius: 12px;
         }
 
         .dropdown-menu {
             position: static;
             width: 100%;
             box-shadow: none;
-            margin-top: 8px;
-            background: rgba(30, 41, 59, 0.6);
-            border-color: rgba(255, 255, 255, 0.06);
+            margin-top: 6px;
+            background: #1e293b;
         }
 
-        /* Mobile Light Mode Overrides */
         [data-theme="light"] .nav-content {
-            background: rgba(255, 255, 255, 0.98) !important;
-            border-bottom: 1px solid #e2e8f0 !important;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08) !important;
-        }
-
-        [data-theme="light"] .nav-link {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #334155 !important;
+            background: #ffffff !important;
+            border-bottom-color: #e2e8f0 !important;
         }
 
         [data-theme="light"] .nav-link:hover,
         [data-theme="light"] .nav-link.active {
-            background: rgba(99, 102, 241, 0.1) !important;
-            border-color: rgba(99, 102, 241, 0.25) !important;
-            color: #4f46e5 !important;
+            background: #f1f5f9 !important;
         }
 
         [data-theme="light"] .nav-actions {
-            border-top: 1px solid #e2e8f0 !important;
-        }
-
-        [data-theme="light"] .profile-trigger {
-            background: #f1f5f9 !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
+            border-top-color: #e2e8f0 !important;
         }
 
         [data-theme="light"] .dropdown-menu {
             background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-
-        [data-theme="light"] .dropdown-item {
-            color: #334155 !important;
-        }
-
-        [data-theme="light"] .dropdown-item:hover {
-            background: #e2e8f0 !important;
-            color: #4f46e5 !important;
         }
     }
 </style>
 
-<div class="bg-glow"></div>
-
 <header class="navbar-header">
     <nav class="navbar">
-        <!-- Logo / Brand with original icon style -->
         <a href="/" class="nav-brand">
             <span class="brand-name">HawkEye</span>
             <span class="icon">🦅</span>
         </a>
 
-        <!-- Mobile Menu Toggle Button -->
         <button class="mobile-toggle" id="navToggleBtn" aria-label="Toggle navigation menu">
             <i class="fa-solid fa-bars" id="navToggleIcon"></i>
         </button>
 
-        <!-- Nav Content -->
         <div class="nav-content" id="navContent">
             {% set active = active_page | default('home') %}
             {% set user_logged_in = session.get('user_id') %}
-            {% set unread_flags = unread_alerts | default(session.get('unread_alerts', 0)) %}
+            {% set is_admin_user = session.get('is_admin') %}
 
             {% if user_logged_in %}
-            <!-- LOGGED-IN USER NAVBAR -->
+            <!-- LOGGED-IN NAVBAR -->
             <ul class="nav-menu">
                 <li>
-                    <a href="/dashboard" class="nav-link {% if active == 'dashboard' %}active{% endif %}">Dashboard</a>
-                </li>
-                <li>
-                    <a href="/my-apps" class="nav-link {% if active == 'my_apps' %}active{% endif %}">My Apps</a>
-                </li>
-                <li>
-                    <a href="/alerts"
-                        class="nav-link {% if active == 'alerts' %}active{% endif %} {% if unread_flags and unread_flags > 0 %}has-alerts{% endif %}">
-                        <span>Alerts</span>
-                        {% if unread_flags and unread_flags > 0 %}
-                        <span class="alert-badge">{{ unread_flags }}</span>
-                        {% endif %}
+                    <a href="/dashboard" class="nav-link {% if active == 'dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line"></i> Dashboard
                     </a>
                 </li>
+                {% if is_admin_user %}
+                <li>
+                    <a href="/admin/users" class="nav-link {% if active == 'admin_users' %}active{% endif %}">
+                        <i class="fa-solid fa-users-gear"></i> Users (Admin)
+                    </a>
+                </li>
+                {% endif %}
             </ul>
 
             <div class="nav-actions">
                 <!-- Theme Toggle Button -->
-                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Mode">
-                    <i class="fa-solid fa-sun" id="themeToggleIcon"></i>
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-moon" id="themeToggleIcon"></i>
                 </button>
-
-                <!-- Add App Button -->
-                <a href="/apps/add" class="btn btn-add">+ Add App</a>
 
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown" id="profileDropdown">
                     <div class="profile-trigger" id="profileTrigger">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div class="avatar-circle">
-                                {{ session.get('user_name', 'U')[0] | upper }}
-                            </div>
-                            <span>{{ session.get('user_name', 'User') }}</span>
+                        <div class="avatar-circle">
+                            {{ session.get('user_name', 'U')[0] | upper }}
                         </div>
-                        <span style="font-size: 0.7rem; color: #94a3b8;">▼</span>
+                        <span>{{ session.get('user_name', 'Account') }}</span>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; color: #94a3b8;"></i>
                     </div>
 
                     <div class="dropdown-menu">
-                        <a href="/profile" class="dropdown-item">Account Settings</a>
-                        <a href="/logout" class="dropdown-item logout">Logout</a>
+                        <div style="padding: 10px 16px; border-bottom: 1px solid #1e293b;">
+                            <div style="font-size: 0.85rem; font-weight: 600; color: #ffffff;">{{ session.get('user_name') }}</div>
+                            <div style="font-size: 0.75rem; color: #94a3b8; text-overflow: ellipsis; overflow: hidden;">{{ session.get('user_email') }}</div>
+                        </div>
+                        <a href="/dashboard" class="dropdown-item"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+                        <a href="/profile" class="dropdown-item"><i class="fa-solid fa-gear"></i> Settings</a>
+                        {% if is_admin_user %}
+                        <a href="/admin/users" class="dropdown-item"><i class="fa-solid fa-users"></i> Admin Panel</a>
+                        {% endif %}
+                        <a href="/logout" class="dropdown-item logout"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
                     </div>
                 </div>
             </div>
 
             {% else %}
-            <!-- GUEST USER NAVBAR -->
+            <!-- PUBLIC / LOGGED-OUT NAVBAR -->
             <ul class="nav-menu">
-                <li>
-                    <a href="/" class="nav-link {% if active == 'home' %}active{% endif %}">Home</a>
-                </li>
-                <li>
-                    <a href="/about" class="nav-link {% if active == 'about' %}active{% endif %}">About / How it
-                        Works</a>
-                </li>
+                <li><a href="/" class="nav-link {% if active == 'home' %}active{% endif %}">Home</a></li>
+                <li><a href="/#how-it-works" class="nav-link">How It Works</a></li>
+                <li><a href="/#features" class="nav-link">Features</a></li>
+                <li><a href="/about" class="nav-link {% if active == 'about' %}active{% endif %}">About</a></li>
             </ul>
 
             <div class="nav-actions">
-                <!-- Theme Toggle Button -->
-                <button type="button" class="theme-toggle-btn" id="themeToggleBtnGuest" title="Toggle Light/Dark Mode">
-                    <i class="fa-solid fa-sun" id="themeToggleIconGuest"></i>
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-moon" id="themeToggleIcon"></i>
                 </button>
-
                 <a href="/login" class="btn btn-secondary">Login</a>
                 <a href="/register" class="btn btn-primary">Sign Up</a>
             </div>
@@ -710,88 +477,65 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const toggleBtn = document.getElementById('navToggleBtn');
-        const toggleIcon = document.getElementById('navToggleIcon');
+        // Mobile menu toggle
+        const navToggleBtn = document.getElementById('navToggleBtn');
         const navContent = document.getElementById('navContent');
+        const navToggleIcon = document.getElementById('navToggleIcon');
+
+        if (navToggleBtn && navContent) {
+            navToggleBtn.addEventListener('click', function () {
+                navContent.classList.toggle('active');
+                if (navToggleIcon) {
+                    navToggleIcon.classList.toggle('fa-bars');
+                    navToggleIcon.classList.toggle('fa-xmark');
+                }
+            });
+        }
+
+        // Profile Dropdown
         const profileDropdown = document.getElementById('profileDropdown');
         const profileTrigger = document.getElementById('profileTrigger');
 
-        // Theme Toggle Functionality
-        const themeBtns = [document.getElementById('themeToggleBtn'), document.getElementById('themeToggleBtnGuest')].filter(Boolean);
-        const themeIcons = [document.getElementById('themeToggleIcon'), document.getElementById('themeToggleIconGuest')].filter(Boolean);
-
-        function updateThemeUI(theme) {
-            themeIcons.forEach(icon => {
-                if (theme === 'light') {
-                    icon.className = 'fa-solid fa-moon';
-                } else {
-                    icon.className = 'fa-solid fa-sun';
-                }
-            });
-            themeBtns.forEach(btn => {
-                btn.setAttribute('title', theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode');
-            });
-        }
-
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        updateThemeUI(currentTheme);
-
-        themeBtns.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-                const newTheme = isLight ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('hawkeye_theme', newTheme);
-                updateThemeUI(newTheme);
-            });
-        });
-
-        function updateToggleIcon() {
-            if (!toggleIcon) return;
-            if (navContent && navContent.classList.contains('active')) {
-                toggleIcon.className = 'fa-solid fa-xmark';
-            } else {
-                toggleIcon.className = 'fa-solid fa-bars';
-            }
-        }
-
-        if (toggleBtn && navContent) {
-            toggleBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                navContent.classList.toggle('active');
-                updateToggleIcon();
-            });
-        }
-
-        if (profileDropdown && profileTrigger) {
+        if (profileTrigger && profileDropdown) {
             profileTrigger.addEventListener('click', function (e) {
                 e.stopPropagation();
                 profileDropdown.classList.toggle('open');
             });
         }
 
-        // Close dropdowns/menus on click outside
+        // Close dropdown on outside click
         document.addEventListener('click', function (e) {
             if (profileDropdown && !profileDropdown.contains(e.target)) {
                 profileDropdown.classList.remove('open');
             }
-            if (navContent && toggleBtn && !navContent.contains(e.target) && !toggleBtn.contains(e.target)) {
-                navContent.classList.remove('active');
-                updateToggleIcon();
-            }
         });
 
-        // Close mobile nav when clicking nav links
-        if (navContent) {
-            const navLinks = navContent.querySelectorAll('.nav-link, .btn, .dropdown-item');
-            navLinks.forEach(function (link) {
-                link.addEventListener('click', function () {
-                    if (window.innerWidth <= 868) {
-                        navContent.classList.remove('active');
-                        updateToggleIcon();
-                    }
-                });
+        // Theme Toggle Handler
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeToggleIcon = document.getElementById('themeToggleIcon');
+
+        function updateThemeIcons() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            if (themeToggleIcon) {
+                if (currentTheme === 'light') {
+                    themeToggleIcon.classList.remove('fa-moon');
+                    themeToggleIcon.classList.add('fa-sun');
+                } else {
+                    themeToggleIcon.classList.remove('fa-sun');
+                    themeToggleIcon.classList.add('fa-moon');
+                }
+            }
+        }
+
+        updateThemeIcons();
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', function () {
+                const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('hawkeye_theme', newTheme);
+                updateThemeIcons();
             });
         }
     });

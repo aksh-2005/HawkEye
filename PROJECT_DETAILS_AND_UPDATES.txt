@@ -1,0 +1,159 @@
+================================================================================
+                    HAWKEYE: APP PRIVILEGE ANALYZER
+             SIMPLIFIED SOLO MINI-PROJECT DOCUMENTATION
+================================================================================
+Generated Date: September 2026
+Project Repository: HawkEye (Solo Mini-Project Edition)
+Technology Stack: Python 3, Flask, SQLAlchemy, PostgreSQL (Neon) / SQLite,
+                  Google Play Scraper, HTML5 / CSS3 / Vanilla JavaScript
+Architecture: Lightweight, Modular MVC Architecture
+
+================================================================================
+1. EXECUTIVE SUMMARY & OBJECTIVE
+================================================================================
+HawkEye is a cybersecurity web application designed to monitor and audit Android 
+application permissions, specifically focusing on detecting "privilege creep" 
+(unauthorized addition of high-sensitivity hardware permissions such as Camera, 
+Microphone, Contacts, SMS, Location, and System Overlay across app versions).
+
+The application compares newly requested permissions against historical snapshots 
+and categorized Google Play Store baselines, providing users with instant 3-way 
+permission diffs (Added / Removed / Unchanged) and clear risk classifications.
+
+================================================================================
+2. CORE FEATURES & MODULES (RETAINED & VERIFIED)
+================================================================================
+[1] User Authentication & Session Management:
+    - User registration and login with secure password hashing using Werkzeug.
+    - Session management with profile settings (username, email, password update).
+
+[2] Admin Module:
+    - Clean administrator view (/admin/users) displaying all registered users, 
+      their roles, and monitored application counts.
+
+[3] Live Google Play Store Search & Autofill:
+    - Real-time search with dropdown suggestions as the user types an app name.
+    - Automatic ingestion of app metadata (App Name, Package ID, Category, 
+      and listed permissions).
+
+[4] App Snapshot Storage & Historical Timeline:
+    - Records timestamped permission snapshots in the database upon initial app 
+      registration and subsequent live Play Store rechecks.
+
+[5] Set-Based Permission Diff Engine:
+    - High-performance permission diff comparison using Python set operations:
+      * Newly Added Permissions  : current_perms - previous_perms
+      * Removed Permissions      : previous_perms - current_perms
+      * Unchanged Baseline Perms : current_perms & previous_perms
+
+[6] Risk Classification Matrix:
+    - High Risk   : RECORD_AUDIO, CAMERA, ACCESS_FINE_LOCATION, READ_CONTACTS, 
+                    READ_SMS, RECEIVE_SMS, SEND_SMS, SYSTEM_ALERT_WINDOW, READ_CALL_LOG
+    - Medium Risk : READ/WRITE_EXTERNAL_STORAGE, WRITE_SETTINGS, PACKAGE_USAGE_STATS, 
+                    BLUETOOTH_ADMIN, GET_ACCOUNTS, ACCESS_COARSE_LOCATION
+    - Low / Safe  : INTERNET, VIBRATE, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, 
+                    WAKE_LOCK, RECEIVE_BOOT_COMPLETED
+
+[7] Category Baseline Module:
+    - Evaluates whether permissions are "Common" or "Unusual" for specific app 
+      categories (Tools, Social, Finance, Productivity, Photography, Health, Entertainment).
+    - Standalone batch runner (build_baseline.py) aggregates category permission 
+      frequencies directly from top Play Store applications.
+
+[8] Clean & Minimal Dashboard:
+    - Overview KPI cards: Total Tracked Apps, High-Risk Flags, Medium-Risk Flags, 
+      and Recently Updated Apps.
+    - Search & filter bar by app name, package, or risk level.
+    - Interactive 3-way visual diffs and snapshot audit logs.
+
+================================================================================
+3. DATABASE SCHEMA & DATA MODELS
+================================================================================
+
+1. User (Table: "users")
+   - id: Integer, Primary Key
+   - username: String(80), Unique, Not Null
+   - email: String(120), Unique, Not Null
+   - password_hash: String(255), Not Null
+   - is_admin: Boolean, Default False
+   - created_at: DateTime, Default CURRENT_TIMESTAMP
+
+2. AppItem (Table: "apps")
+   - id: Integer, Primary Key
+   - user_id: Integer, Foreign Key -> users.id
+   - app_name: String(150), Not Null
+   - package_name: String(200), Not Null
+   - category: String(100), Default "Tools"
+   - updated_at: DateTime (Tracks last update timestamp)
+
+3. AppPermission (Table: "app_permissions")
+   - id: Integer, Primary Key
+   - app_id: Integer, Foreign Key -> apps.id
+   - permission_name: String(200), Not Null
+   - risk_level: String(20) [HIGH | MEDIUM | LOW]
+   - is_new: Boolean (Flags newly added permissions)
+
+4. AppSnapshot (Table: "app_snapshots")
+   - id: Integer, Primary Key
+   - app_id: Integer, Foreign Key -> apps.id
+   - snapshot_title: String(150), Not Null
+   - timestamp: DateTime
+   - added_perms: Text (JSON list of added permission objects)
+   - removed_perms: Text (JSON list of removed permission objects)
+   - unchanged_perms: Text (JSON list of baseline permission names)
+   - risk_summary: String(20) [HIGH | MEDIUM | LOW | SAFE]
+   - notes: String(255)
+
+5. CategoryBaseline (Table: "category_baseline")
+   - id: Integer, Primary Key
+   - category: String(100), Not Null
+   - permission_name: String(200), Not Null
+   - frequency_percentage: Float
+   - sample_size: Integer
+   - updated_at: DateTime
+
+================================================================================
+4. ROUTE REFERENCE
+================================================================================
+
+[Authentication & Account]
+- GET /                         : Landing Page
+- GET /about                    : About Project
+- GET, POST /login              : User Authentication
+- GET, POST /register           : User Registration
+- GET /logout                   : Sign Out / Session Clear
+- GET, POST /profile            : User Profile & Password Update
+
+[Dashboard & App Management]
+- GET /dashboard                : Main User Dashboard
+- POST /apps/add                : Add Application to Monitor
+- POST /apps/delete/<id>        : Delete Monitored Application
+- POST /apps/add-permission/<id>: Add Permission (Simulate Update)
+- POST /apps/recheck/<id>       : Live Play Store Re-check & Diff Generation
+- POST /dashboard/seed-demo     : Seed Sample Demo Data with Snapshots
+
+[Admin Module]
+- GET /admin/users              : View All Registered Users (Admin only)
+
+[Play Store Scraper APIs]
+- GET /api/playstore/search     : Autocomplete Search API
+- GET /api/playstore/app/<pkg>  : App Details & Scraped Permissions API
+- POST /api/playstore/build-baseline : Category Baseline Builder API
+- GET /api/status               : System Health Check
+
+================================================================================
+5. RUNNING THE APPLICATION
+================================================================================
+
+1. Install Dependencies:
+   pip install -r requirements.txt
+
+2. Run Application:
+   python app.py
+
+   Access at: http://127.0.0.1:5000
+
+3. Update Category Baseline (Optional):
+   python build_baseline.py --category Tools --samples 8
+   python build_baseline.py --all --samples 6
+================================================================================

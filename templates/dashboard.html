@@ -1,0 +1,1743 @@
+{% extends 'base.html' %}
+
+{% block title %}HawkEye — App Privilege Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-container {
+        max-width: 1200px;
+        margin: 32px auto 60px;
+        padding: 0 24px;
+        width: 100%;
+    }
+
+    /* Dashboard Header Banner */
+    .dashboard-header-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .header-welcome h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-welcome p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-dash-primary {
+        background: #4f46e5;
+        color: #ffffff;
+        border: none;
+        padding: 9px 18px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .btn-dash-primary:hover {
+        background: #4338ca;
+        color: #ffffff;
+    }
+
+    .btn-dash-secondary {
+        background: #1e293b;
+        color: #e2e8f0;
+        border: 1px solid #334155;
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-dash-secondary:hover {
+        background: #334155;
+        color: #ffffff;
+    }
+
+    /* KPI Summary Stats Grid */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .kpi-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .kpi-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .kpi-icon-indigo {
+        background: rgba(99, 102, 241, 0.12);
+        color: #818cf8;
+    }
+
+    .kpi-icon-red {
+        background: rgba(239, 68, 68, 0.12);
+        color: #f87171;
+    }
+
+    .kpi-icon-amber {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fbbf24;
+    }
+
+    .kpi-icon-green {
+        background: rgba(16, 185, 129, 0.12);
+        color: #34d399;
+    }
+
+    .kpi-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        font-family: 'JetBrains Mono', monospace;
+        line-height: 1.1;
+    }
+
+    .kpi-label {
+        color: #94a3b8;
+        font-size: 0.82rem;
+        font-weight: 500;
+        margin-top: 3px;
+    }
+
+    /* Main Apps Section */
+    .dash-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .card-title-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 18px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #1e293b;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Search & Filter Bar */
+    .search-filter-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+        position: relative;
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .search-input-wrapper i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #64748b;
+        font-size: 0.85rem;
+    }
+
+    .search-input {
+        width: 100%;
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px 12px 8px 34px;
+        color: #ffffff;
+        font-size: 0.88rem;
+        outline: none;
+    }
+
+    .search-input:focus {
+        border-color: #6366f1;
+    }
+
+    .filter-btn-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .filter-chip {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+        background: rgba(99, 102, 241, 0.2);
+        border-color: #6366f1;
+        color: #ffffff;
+    }
+
+    .sort-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .sort-select {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 7px 10px;
+        color: #e2e8f0;
+        font-size: 0.82rem;
+        outline: none;
+        cursor: pointer;
+    }
+
+    /* Apps List */
+    .app-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .app-item-card {
+        background: #131d31;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 18px 20px;
+        transition: border-color 0.2s ease;
+    }
+
+    .app-item-card:hover {
+        border-color: #334155;
+    }
+
+    .app-item-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .app-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .app-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: #4f46e5;
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .app-name-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 2px;
+    }
+
+    .app-pkg-name {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.78rem;
+        color: #94a3b8;
+    }
+
+    .risk-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 3px 9px;
+        border-radius: 14px;
+        text-transform: uppercase;
+        font-family: 'JetBrains Mono', monospace;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .risk-badge-HIGH {
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .risk-badge-MEDIUM {
+        background: rgba(245, 158, 11, 0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .risk-badge-LOW {
+        background: rgba(56, 189, 248, 0.15);
+        color: #38bdf8;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+
+    .risk-badge-SAFE {
+        background: rgba(16, 185, 129, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .baseline-tag {
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .baseline-common {
+        background: rgba(16, 185, 129, 0.12);
+        color: #34d399;
+    }
+
+    .baseline-unusual {
+        background: rgba(239, 68, 68, 0.15);
+        color: #f87171;
+    }
+
+    .perm-pills {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .perm-pill-tag {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 6px;
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #cbd5e1;
+        font-family: 'JetBrains Mono', monospace;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .perm-pill-tag.new-tag {
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #f87171;
+        background: rgba(239, 68, 68, 0.1);
+    }
+
+    .btn-app-action {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #cbd5e1;
+        cursor: pointer;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .btn-app-action:hover {
+        background: #334155;
+        color: #ffffff;
+    }
+
+    .btn-diff-toggle {
+        background: rgba(99, 102, 241, 0.12);
+        border-color: rgba(99, 102, 241, 0.3);
+        color: #a5b4fc;
+    }
+
+    .btn-diff-toggle:hover {
+        background: rgba(99, 102, 241, 0.25);
+        color: #ffffff;
+    }
+
+    .btn-recheck {
+        background: rgba(168, 85, 247, 0.12);
+        border-color: rgba(168, 85, 247, 0.3);
+        color: #c084fc;
+    }
+
+    .btn-recheck:hover {
+        background: rgba(168, 85, 247, 0.25);
+        color: #ffffff;
+    }
+
+    .btn-delete-app {
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        padding: 6px 8px;
+        border-radius: 6px;
+        transition: color 0.2s ease;
+    }
+
+    .btn-delete-app:hover {
+        color: #f87171;
+    }
+
+    /* Expandable Permission Diff & Timeline Panel */
+    .app-expandable-panel {
+        display: none;
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #1e293b;
+    }
+
+    .app-expandable-panel.open {
+        display: block;
+    }
+
+    .diff-tabs-bar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #1e293b;
+        padding-bottom: 8px;
+    }
+
+    .diff-tab-btn {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .diff-tab-btn:hover, .diff-tab-btn.active {
+        background: #4f46e5;
+        border-color: #4f46e5;
+        color: #ffffff;
+    }
+
+    .diff-columns-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .diff-column {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 100px;
+    }
+
+    .diff-col-header {
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #1e293b;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .diff-col-header-added { color: #f87171; }
+    .diff-col-header-removed { color: #94a3b8; }
+    .diff-col-header-unchanged { color: #818cf8; }
+
+    .diff-pill-item {
+        padding: 6px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-family: 'JetBrains Mono', monospace;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .diff-pill-added {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #fca5a5;
+    }
+
+    .diff-pill-removed {
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        color: #94a3b8;
+        text-decoration: line-through;
+    }
+
+    .diff-pill-unchanged {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #cbd5e1;
+    }
+
+    /* Timeline Component */
+    .timeline-wrap {
+        position: relative;
+        padding-left: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 6px;
+    }
+
+    .timeline-wrap::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        bottom: 6px;
+        left: 5px;
+        width: 2px;
+        background: #334155;
+    }
+
+    .timeline-node {
+        position: relative;
+    }
+
+    .timeline-node::before {
+        content: '';
+        position: absolute;
+        left: -17px;
+        top: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #6366f1;
+        border: 2px solid #0f172a;
+    }
+
+    .timeline-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        padding: 10px 12px;
+    }
+
+    .timeline-meta-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 4px;
+        flex-wrap: wrap;
+    }
+
+    .timeline-title-text {
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #ffffff;
+    }
+
+    .timeline-time-text {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .timeline-tags-row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+    }
+
+    /* Modal Component */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .modal-overlay.open {
+        display: flex;
+    }
+
+    .modal-content-box {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 580px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 24px;
+        position: relative;
+    }
+
+    .modal-header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .modal-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .modal-close-btn {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+
+    .modal-close-btn:hover {
+        color: #ffffff;
+    }
+
+    .form-group-modal {
+        margin-bottom: 16px;
+    }
+
+    .form-label-modal {
+        display: block;
+        color: #cbd5e1;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    .form-input-modal {
+        width: 100%;
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 8px 12px;
+        color: #ffffff;
+        font-size: 0.9rem;
+        outline: none;
+    }
+
+    .form-input-modal:focus {
+        border-color: #6366f1;
+    }
+
+    .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        max-height: 180px;
+        overflow-y: auto;
+        padding: 8px;
+        background: #0b1120;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        color: #e2e8f0;
+        cursor: pointer;
+    }
+
+    .checkbox-item input {
+        accent-color: #6366f1;
+    }
+
+    /* Play Store Search Autocomplete */
+    .playstore-search-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .playstore-results-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        max-height: 220px;
+        overflow-y: auto;
+        z-index: 1000;
+        display: none;
+    }
+
+    .playstore-results-dropdown.active {
+        display: block;
+    }
+
+    .playstore-result-item {
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .playstore-result-item:last-child {
+        border-bottom: none;
+    }
+
+    .playstore-result-item:hover {
+        background: #1e293b;
+    }
+
+    .playstore-app-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+
+    .playstore-result-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .playstore-result-meta {
+        font-size: 0.72rem;
+        color: #94a3b8;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .autofill-banner {
+        background: rgba(16, 185, 129, 0.12);
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        border-radius: 8px;
+        padding: 8px 12px;
+        color: #34d399;
+        font-size: 0.82rem;
+        margin-bottom: 14px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Zero State Card */
+    .zero-state-card {
+        text-align: center;
+        padding: 40px 20px;
+        background: #131d31;
+        border: 1px dashed #334155;
+        border-radius: 12px;
+    }
+
+    .zero-icon {
+        font-size: 2.4rem;
+        margin-bottom: 10px;
+        display: inline-block;
+    }
+
+    .zero-title {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 4px;
+    }
+
+    .zero-desc {
+        color: #94a3b8;
+        font-size: 0.88rem;
+        max-width: 440px;
+        margin: 0 auto 18px;
+        line-height: 1.5;
+    }
+
+    /* Light Theme Overrides */
+    [data-theme="light"] .dashboard-header-card,
+    [data-theme="light"] .kpi-card,
+    [data-theme="light"] .dash-card,
+    [data-theme="light"] .modal-content-box,
+    [data-theme="light"] .playstore-results-dropdown {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    [data-theme="light"] .header-welcome h1,
+    [data-theme="light"] .kpi-value,
+    [data-theme="light"] .card-title-bar,
+    [data-theme="light"] .app-name-title,
+    [data-theme="light"] .zero-title,
+    [data-theme="light"] .modal-title {
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .app-item-card,
+    [data-theme="light"] .zero-state-card {
+        background: #f8fafc !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    [data-theme="light"] .diff-column,
+    [data-theme="light"] .timeline-card,
+    [data-theme="light"] .checkbox-grid {
+        background: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    [data-theme="light"] .search-input,
+    [data-theme="light"] .form-input-modal,
+    [data-theme="light"] .sort-select {
+        background: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .perm-pill-tag,
+    [data-theme="light"] .btn-app-action,
+    [data-theme="light"] .filter-chip,
+    [data-theme="light"] .diff-tab-btn,
+    [data-theme="light"] .diff-pill-unchanged {
+        background: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        color: #334155 !important;
+    }
+
+    [data-theme="light"] .btn-dash-secondary {
+        background: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        color: #334155 !important;
+    }
+
+    @media (max-width: 900px) {
+        .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+        .diff-columns-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 540px) {
+        .kpi-grid { grid-template-columns: 1fr; }
+        .checkbox-grid { grid-template-columns: 1fr; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- HEADER CARD -->
+    <div class="dashboard-header-card">
+        <div class="header-welcome">
+            <h1>
+                🦅 Dashboard
+            </h1>
+            <p>
+                Logged in as <strong>{{ user.username }}</strong> &bull; {{ total_apps_count }} application(s) currently monitored
+            </p>
+        </div>
+
+        <div class="header-actions">
+            <button type="button" class="btn-dash-primary" id="openAddAppBtn">
+                <i class="fa-solid fa-plus"></i> Add Application
+            </button>
+        </div>
+    </div>
+
+    <!-- KPI SUMMARY STATS -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-indigo">
+                <i class="fa-solid fa-cubes"></i>
+            </div>
+            <div>
+                <div class="kpi-value">{{ total_apps_count }}</div>
+                <div class="kpi-label">Tracked Apps</div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-red">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <div class="kpi-value" style="color: #f87171;">{{ high_risk_count }}</div>
+                <div class="kpi-label">High-Risk Flags</div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-amber">
+                <i class="fa-solid fa-circle-exclamation"></i>
+            </div>
+            <div>
+                <div class="kpi-value" style="color: #fbbf24;">{{ med_risk_count }}</div>
+                <div class="kpi-label">Medium-Risk Flags</div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-icon-wrapper kpi-icon-green">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div>
+                <div class="kpi-value" style="color: #34d399;">{{ recently_updated_count }}</div>
+                <div class="kpi-label">Recently Updated</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MONITORED APPLICATIONS CARD -->
+    <div class="dash-card">
+        <div class="card-title-bar">
+            <div>
+                <i class="fa-solid fa-mobile-screen-button" style="color: #6366f1; margin-right: 6px;"></i> Monitored Applications
+            </div>
+            <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 400;">{{ total_apps_count }} Total</span>
+        </div>
+
+        {% if total_apps_count > 0 %}
+        <!-- FILTER & SORT BAR -->
+        <div class="search-filter-bar">
+            <div class="search-input-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="appSearchInput" class="search-input" placeholder="Search app name or package ID...">
+            </div>
+            <div class="filter-btn-group">
+                <button type="button" class="filter-chip active" data-filter="all">All</button>
+                <button type="button" class="filter-chip" data-filter="HIGH">High Risk</button>
+                <button type="button" class="filter-chip" data-filter="MEDIUM">Med Risk</button>
+                <button type="button" class="filter-chip" data-filter="SAFE">Low / Safe</button>
+            </div>
+            <div class="sort-wrapper">
+                <span style="font-size: 0.8rem; color: #94a3b8;"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort:</span>
+                <select id="appSortSelect" class="sort-select">
+                    <option value="recent">Recently Updated</option>
+                    <option value="risk">High Risk First</option>
+                    <option value="name">App Name (A-Z)</option>
+                    <option value="perms">Permission Count</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="app-list" id="appListContainer">
+            {% for app in user_apps %}
+            <div class="app-item-card" 
+                data-app-name="{{ app.app_name | lower }}" 
+                data-app-pkg="{{ app.package_name | lower }}" 
+                data-app-risk="{{ app.max_risk }}"
+                data-app-updated="{{ app.updated_at_timestamp }}"
+                data-app-high-risk="{{ app.high_risk }}"
+                data-app-total-perms="{{ app.total_permissions }}">
+                
+                <div class="app-item-header">
+                    <div class="app-meta">
+                        <div class="app-avatar">
+                            {{ app.app_name[0] | upper }}
+                        </div>
+                        <div>
+                            <div class="app-name-title">{{ app.app_name }}</div>
+                            <div class="app-pkg-name">
+                                {{ app.package_name }} &bull; <span style="color: #818cf8; font-weight: 600;">{{ app.category }}</span>
+                                {% if app.is_recently_updated %}
+                                <span style="margin-left: 6px; font-size: 0.7rem; background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); padding: 1px 6px; border-radius: 4px;">
+                                    Recently Updated
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <!-- Risk Badge -->
+                        <span class="risk-badge risk-badge-{{ app.max_risk }}">
+                            {% if app.max_risk == 'HIGH' %}
+                            <i class="fa-solid fa-triangle-exclamation"></i> HIGH RISK
+                            {% elif app.max_risk == 'MEDIUM' %}
+                            <i class="fa-solid fa-circle-exclamation"></i> MEDIUM RISK
+                            {% elif app.max_risk == 'LOW' %}
+                            <i class="fa-solid fa-shield"></i> LOW RISK
+                            {% else %}
+                            <i class="fa-solid fa-shield-check"></i> SAFE
+                            {% endif %}
+                        </span>
+
+                        <!-- Expand Diff / Timeline Toggle -->
+                        <button type="button" class="btn-app-action btn-diff-toggle" onclick="toggleAppDiffSection('diff-section-{{ app.id }}', 'chevron-{{ app.id }}')" title="Toggle Permission Diff & History Timeline">
+                            <i class="fa-solid fa-code-compare"></i> Diff & Timeline
+                            <span style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; background: rgba(99,102,241,0.25); color: #c7d2fe;">
+                                +{{ app.diff_added | length }}
+                            </span>
+                            <i class="fa-solid fa-chevron-down diff-chevron" id="chevron-{{ app.id }}" style="transition: transform 0.2s ease;"></i>
+                        </button>
+
+                        <!-- Recheck Play Store Data -->
+                        <form action="/apps/recheck/{{ app.id }}" method="POST" style="margin: 0;">
+                            <button type="submit" class="btn-app-action btn-recheck" title="Re-check live Play Store permissions">
+                                <i class="fa-solid fa-arrows-rotate"></i> Recheck
+                            </button>
+                        </form>
+
+                        <!-- Inspect / Add Permission -->
+                        <button type="button" class="btn-app-action inspect-app-btn"
+                            data-id="{{ app.id }}"
+                            data-name="{{ app.app_name }}"
+                            data-pkg="{{ app.package_name }}"
+                            data-cat="{{ app.category }}"
+                            data-perms='{{ app.permissions | tojson }}'
+                            title="Inspect permissions and test additions">
+                            <i class="fa-solid fa-magnifying-glass"></i> Inspect
+                        </button>
+
+                        <form action="/apps/delete/{{ app.id }}" method="POST" onsubmit="return confirm('Remove {{ app.app_name }} from monitoring?');" style="margin: 0;">
+                            <button type="submit" class="btn-delete-app" title="Remove App">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Permission Pills with Category Baseline Badges -->
+                <div class="perm-pills">
+                    {% for perm in app.permissions %}
+                    <span class="perm-pill-tag {% if perm.is_new %}new-tag{% endif %}" title="{{ perm.desc }} &bull; {{ perm.baseline.label }}">
+                        {% if perm.risk == 'HIGH' %}<i class="fa-solid fa-circle" style="color: #ef4444; font-size: 0.45rem;"></i>{% endif %}
+                        {{ perm.name }}
+                        {% if perm.is_new %}<span style="font-weight:700; color:#ef4444; margin-left: 2px;">(NEW)</span>{% endif %}
+                        
+                        {% if perm.baseline.is_unusual %}
+                        <span class="baseline-tag baseline-unusual">
+                            <i class="{{ perm.baseline.icon }}"></i> Unusual
+                        </span>
+                        {% else %}
+                        <span class="baseline-tag baseline-common">
+                            <i class="{{ perm.baseline.icon }}"></i> Common
+                        </span>
+                        {% endif %}
+                    </span>
+                    {% endfor %}
+                </div>
+
+                <!-- EXPANDABLE 3-WAY DIFF & TIMELINE -->
+                <div class="app-expandable-panel" id="diff-section-{{ app.id }}">
+                    <div class="diff-tabs-bar">
+                        <button type="button" class="diff-tab-btn active" id="tabbtn-diff-{{ app.id }}" onclick="switchAppTab('{{ app.id }}', 'diff')">
+                            <i class="fa-solid fa-code-compare"></i> 3-Way Permission Diff
+                        </button>
+                        <button type="button" class="diff-tab-btn" id="tabbtn-timeline-{{ app.id }}" onclick="switchAppTab('{{ app.id }}', 'timeline')">
+                            <i class="fa-solid fa-timeline"></i> Snapshot History ({{ app.timeline | length }})
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: 3-WAY DIFF -->
+                    <div id="tab-diff-{{ app.id }}">
+                        <div class="diff-columns-grid">
+                            <!-- NEWLY ADDED -->
+                            <div class="diff-column">
+                                <div class="diff-col-header diff-col-header-added">
+                                    <span><i class="fa-solid fa-plus-circle"></i> Newly Added</span>
+                                    <span style="font-size: 0.72rem; background: rgba(239,68,68,0.2); color: #f87171; padding: 1px 6px; border-radius: 6px; font-weight: 700;">+{{ app.diff_added | length }}</span>
+                                </div>
+                                {% if app.diff_added and app.diff_added | length > 0 %}
+                                    {% for perm in app.diff_added %}
+                                    <div class="diff-pill-item diff-pill-added">
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <strong style="color: #fca5a5;">+ {{ perm.name }}</strong>
+                                            <span style="font-size: 0.7rem; font-weight: 700; color: {% if perm.risk == 'HIGH' %}#ef4444{% elif perm.risk == 'MEDIUM' %}#f59e0b{% else %}#10b981{% endif %};">{{ perm.risk }}</span>
+                                        </div>
+                                        <div style="font-size: 0.72rem; color: #94a3b8;">{{ perm.desc }}</div>
+                                        <div style="margin-top: 2px;">
+                                            {% if perm.baseline.is_unusual %}
+                                            <span class="baseline-tag baseline-unusual"><i class="{{ perm.baseline.icon }}"></i> Unusual for {{ app.category }}</span>
+                                            {% else %}
+                                            <span class="baseline-tag baseline-common"><i class="{{ perm.baseline.icon }}"></i> Common for {{ app.category }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div style="color: #64748b; font-size: 0.78rem; text-align: center; padding: 16px 0;">
+                                        No newly added permissions
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- REMOVED -->
+                            <div class="diff-column">
+                                <div class="diff-col-header diff-col-header-removed">
+                                    <span><i class="fa-solid fa-minus-circle"></i> Removed / Revoked</span>
+                                    <span style="font-size: 0.72rem; background: rgba(148,163,184,0.15); color: #cbd5e1; padding: 1px 6px; border-radius: 6px; font-weight: 700;">-{{ app.diff_removed | length }}</span>
+                                </div>
+                                {% if app.diff_removed and app.diff_removed | length > 0 %}
+                                    {% for perm in app.diff_removed %}
+                                    <div class="diff-pill-item diff-pill-removed">
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <span>- {{ perm.name }}</span>
+                                            <span style="font-size: 0.7rem;">{{ perm.risk }}</span>
+                                        </div>
+                                        <div style="font-size: 0.72rem; color: #64748b;">{{ perm.desc }}</div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div style="color: #64748b; font-size: 0.78rem; text-align: center; padding: 16px 0;">
+                                        No revoked permissions
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- UNCHANGED -->
+                            <div class="diff-column">
+                                <div class="diff-col-header diff-col-header-unchanged">
+                                    <span><i class="fa-solid fa-equals"></i> Unchanged Baseline</span>
+                                    <span style="font-size: 0.72rem; background: rgba(99,102,241,0.2); color: #a5b4fc; padding: 1px 6px; border-radius: 6px; font-weight: 700;">{{ app.diff_unchanged | length }}</span>
+                                </div>
+                                {% if app.diff_unchanged and app.diff_unchanged | length > 0 %}
+                                    {% for perm in app.diff_unchanged %}
+                                    <div class="diff-pill-item diff-pill-unchanged">
+                                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                                            <span>{{ perm.name }}</span>
+                                            <span style="font-size: 0.7rem; font-weight: 600; color: {% if perm.risk == 'HIGH' %}#f87171{% elif perm.risk == 'MEDIUM' %}#fbbf24{% else %}#34d399{% endif %};">{{ perm.risk }}</span>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div style="color: #64748b; font-size: 0.78rem; text-align: center; padding: 16px 0;">No unchanged baseline</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: TIMELINE -->
+                    <div id="tab-timeline-{{ app.id }}" style="display: none;">
+                        <div class="timeline-wrap">
+                            {% for event in app.timeline %}
+                            <div class="timeline-node">
+                                <div class="timeline-card">
+                                    <div class="timeline-meta-bar">
+                                        <span class="timeline-title-text">{{ event.title }}</span>
+                                        <span class="timeline-time-text">{{ event.date }}</span>
+                                    </div>
+                                    {% if event.notes %}
+                                    <p style="font-size: 0.8rem; color: #94a3b8; margin: 3px 0 6px;">{{ event.notes }}</p>
+                                    {% endif %}
+                                    <div class="timeline-tags-row">
+                                        {% if event.added_perms %}
+                                            {% for p in event.added_perms %}
+                                            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono'; background: rgba(239,68,68,0.15); color: #fca5a5; padding: 2px 6px; border-radius: 4px;">
+                                                + {{ p.name if p is mapping else p }}
+                                            </span>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if event.removed_perms %}
+                                            {% for p in event.removed_perms %}
+                                            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono'; background: rgba(148,163,184,0.1); color: #94a3b8; padding: 2px 6px; border-radius: 4px; text-decoration: line-through;">
+                                                - {{ p.name if p is mapping else p }}
+                                            </span>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if event.unchanged_perms %}
+                                            <span style="font-size: 0.72rem; font-family: 'JetBrains Mono'; background: rgba(99,102,241,0.1); color: #a5b4fc; padding: 2px 6px; border-radius: 4px;">
+                                                = {{ event.unchanged_perms | length }} baseline perms
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- ZERO STATE -->
+        <div class="zero-state-card">
+            <span class="zero-icon">🛡️</span>
+            <h3 class="zero-title">No Applications Monitored Yet</h3>
+            <p class="zero-desc">
+                Add an Android app package to monitor its permissions against Google Play baselines, or load sample demo data to test privilege analysis.
+            </p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-dash-primary" id="zeroAddAppBtn">
+                    <i class="fa-solid fa-plus"></i> Add First App
+                </button>
+                <form action="/dashboard/seed-demo" method="POST" style="margin: 0;">
+                    <button type="submit" class="btn-dash-secondary">
+                        <i class="fa-solid fa-bolt" style="color: #fbbf24;"></i> Load Sample Demo Data
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- CATEGORY BASELINE BUILDER WIDGET -->
+    <div class="dash-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <h4 style="font-size: 1rem; font-weight: 600; color: #ffffff; margin-bottom: 2px;">
+                    <i class="fa-brands fa-google-play" style="color: #6366f1;"></i> Category Baseline Generator
+                </h4>
+                <p style="font-size: 0.82rem; color: #94a3b8; margin: 0;">
+                    Scrape top Play Store apps in a category to recalculate permission frequency percentages.
+                </p>
+            </div>
+        </div>
+
+        <form id="buildBaselineForm" action="/api/playstore/build-baseline" method="POST" style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <select name="category" id="baselineCategorySelect" class="sort-select" style="min-width: 140px;">
+                <option value="Tools">Tools</option>
+                <option value="Social">Social</option>
+                <option value="Finance">Finance</option>
+                <option value="Productivity">Productivity</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Photography">Photography</option>
+                <option value="Health">Health</option>
+            </select>
+            <button type="submit" id="btnBuildBaseline" class="btn-dash-primary" style="padding: 7px 14px; font-size: 0.82rem;">
+                <i class="fa-solid fa-arrows-rotate"></i> Update Baseline
+            </button>
+        </form>
+        <div id="baselineBuildStatus" style="font-size: 0.8rem; color: #34d399; margin-top: 8px; display: none;"></div>
+    </div>
+
+</div>
+
+<!-- ADD APPLICATION MODAL -->
+<div class="modal-overlay" id="addAppModal">
+    <div class="modal-content-box">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-plus-circle" style="color: #6366f1;"></i> Add Application to Monitor
+            </div>
+            <button type="button" class="modal-close-btn" id="closeAddAppModal">&times;</button>
+        </div>
+
+        <div id="autofillNotice" class="autofill-banner">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="autofillNoticeText">Autofilled app details from Google Play.</span>
+        </div>
+
+        <form action="/apps/add" method="POST" id="addAppForm">
+            <div class="form-group-modal">
+                <label class="form-label-modal" for="app_name">
+                    Application Name
+                    <span style="font-size: 0.75rem; color: #818cf8; font-weight: normal; margin-left: 6px;">
+                        (Type to search Play Store)
+                    </span>
+                </label>
+                <div class="playstore-search-container">
+                    <input type="text" id="app_name" name="app_name" class="form-input-modal" placeholder="e.g. WhatsApp, Spotify, NovaPay" autocomplete="off" required>
+                    <div id="playstoreSuggestions" class="playstore-results-dropdown"></div>
+                </div>
+            </div>
+
+            <div class="form-group-modal">
+                <label class="form-label-modal" for="package_name">Package ID / Name</label>
+                <input type="text" id="package_name" name="package_name" class="form-input-modal" placeholder="e.g. com.spotify.music" required>
+            </div>
+
+            <div class="form-group-modal">
+                <label class="form-label-modal" for="category">Category</label>
+                <select id="category" name="category" class="form-input-modal">
+                    <option value="Tools">Tools</option>
+                    <option value="Social">Social</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Productivity">Productivity</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Photography">Photography</option>
+                    <option value="Health">Health</option>
+                </select>
+            </div>
+
+            <div class="form-group-modal">
+                <label class="form-label-modal">
+                    Permissions Scanned
+                </label>
+                <div class="checkbox-grid" id="addAppPermsCheckboxes">
+                    {% for perm_name, perm_info in available_permissions.items() %}
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="permissions" value="{{ perm_name }}" id="chk_perm_{{ perm_name }}">
+                        <span>
+                            {{ perm_name }}
+                            <small style="color: {% if perm_info[0] == 'HIGH' %}#f87171{% elif perm_info[0] == 'MEDIUM' %}#fbbf24{% else %}#34d399{% endif %}; font-weight: 700;">({{ perm_info[0] }})</small>
+                        </span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="form-group-modal">
+                <label class="form-label-modal" for="custom_permission">Custom Permission (Optional)</label>
+                <input type="text" id="custom_permission" name="custom_permission" class="form-input-modal" placeholder="e.g. BIND_ACCESSIBILITY_SERVICE">
+            </div>
+
+            <button type="submit" class="btn-dash-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                Save & Start Monitoring
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- INSPECT APP MODAL -->
+<div class="modal-overlay" id="inspectAppModal">
+    <div class="modal-content-box">
+        <div class="modal-header-bar">
+            <div class="modal-title">
+                <i class="fa-solid fa-magnifying-glass" style="color: #a855f7;"></i> <span id="inspectAppName">App Details</span>
+            </div>
+            <button type="button" class="modal-close-btn" id="closeInspectModal">&times;</button>
+        </div>
+
+        <div style="margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #1e293b; font-size: 0.85rem; color: #94a3b8;">
+            Package: <code id="inspectAppPkg" style="color: #818cf8;"></code> &bull; Category: <span id="inspectAppCat" style="color: #ffffff; font-weight: 600;"></span>
+        </div>
+
+        <div style="margin-bottom: 18px;">
+            <label class="form-label-modal">Active Permissions List</label>
+            <div id="inspectPermsList" style="display: flex; flex-direction: column; gap: 6px; max-height: 180px; overflow-y: auto;"></div>
+        </div>
+
+        <!-- Simulate Privilege Addition -->
+        <div style="background: #1e293b; border-radius: 8px; padding: 14px;">
+            <div style="font-weight: 600; color: #ffffff; font-size: 0.85rem; margin-bottom: 6px;">
+                <i class="fa-solid fa-bolt" style="color: #fbbf24;"></i> Add Permission (Simulate Update)
+            </div>
+            <form id="inspectAddPermForm" method="POST">
+                <div style="display: flex; gap: 6px;">
+                    <select name="permission_name" class="form-input-modal" style="flex: 1;" required>
+                        <option value="">-- Select Permission --</option>
+                        {% for perm_name, perm_info in available_permissions.items() %}
+                        <option value="{{ perm_name }}">{{ perm_name }} ({{ perm_info[0] }})</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn-dash-primary" style="white-space: nowrap; padding: 6px 12px;">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Modal Handlers
+        const addAppModal = document.getElementById('addAppModal');
+        const openAddAppBtn = document.getElementById('openAddAppBtn');
+        const zeroAddAppBtn = document.getElementById('zeroAddAppBtn');
+        const closeAddAppModal = document.getElementById('closeAddAppModal');
+
+        function openAddModal() { if (addAppModal) addAppModal.classList.add('open'); }
+        function closeAddModal() { if (addAppModal) addAppModal.classList.remove('open'); }
+
+        if (openAddAppBtn) openAddAppBtn.addEventListener('click', openAddModal);
+        if (zeroAddAppBtn) zeroAddAppBtn.addEventListener('click', openAddModal);
+        if (closeAddAppModal) closeAddAppModal.addEventListener('click', closeAddModal);
+
+        window.addEventListener('click', function(e) {
+            if (e.target === addAppModal) closeAddModal();
+            if (e.target === inspectAppModal) closeInspectModalFunc();
+        });
+
+        // Toggle Diff / Timeline
+        window.toggleAppDiffSection = function(sectionId, chevronId) {
+            const section = document.getElementById(sectionId);
+            const chevron = document.getElementById(chevronId);
+            if (section) {
+                const isOpen = section.classList.contains('open');
+                if (isOpen) {
+                    section.classList.remove('open');
+                    if (chevron) chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    section.classList.add('open');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                }
+            }
+        };
+
+        window.switchAppTab = function(appId, tabName) {
+            const diffTab = document.getElementById(`tab-diff-${appId}`);
+            const timelineTab = document.getElementById(`tab-timeline-${appId}`);
+            const diffBtn = document.getElementById(`tabbtn-diff-${appId}`);
+            const timelineBtn = document.getElementById(`tabbtn-timeline-${appId}`);
+
+            if (tabName === 'diff') {
+                if (diffTab) diffTab.style.display = 'block';
+                if (timelineTab) timelineTab.style.display = 'none';
+                if (diffBtn) diffBtn.classList.add('active');
+                if (timelineBtn) timelineBtn.classList.remove('active');
+            } else {
+                if (diffTab) diffTab.style.display = 'none';
+                if (timelineTab) timelineTab.style.display = 'block';
+                if (diffBtn) diffBtn.classList.remove('active');
+                if (timelineBtn) timelineBtn.classList.add('active');
+            }
+        };
+
+        // Inspect Modal
+        const inspectAppModal = document.getElementById('inspectAppModal');
+        const closeInspectModal = document.getElementById('closeInspectModal');
+        const inspectAppName = document.getElementById('inspectAppName');
+        const inspectAppPkg = document.getElementById('inspectAppPkg');
+        const inspectAppCat = document.getElementById('inspectAppCat');
+        const inspectPermsList = document.getElementById('inspectPermsList');
+        const inspectAddPermForm = document.getElementById('inspectAddPermForm');
+
+        function closeInspectModalFunc() {
+            if (inspectAppModal) inspectAppModal.classList.remove('open');
+        }
+        if (closeInspectModal) closeInspectModal.addEventListener('click', closeInspectModalFunc);
+
+        document.querySelectorAll('.inspect-app-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+                const pkg = this.getAttribute('data-pkg');
+                const cat = this.getAttribute('data-cat');
+                const perms = JSON.parse(this.getAttribute('data-perms') || '[]');
+
+                if (inspectAppName) inspectAppName.textContent = name;
+                if (inspectAppPkg) inspectAppPkg.textContent = pkg;
+                if (inspectAppCat) inspectAppCat.textContent = cat;
+                if (inspectAddPermForm) inspectAddPermForm.action = `/apps/add-permission/${id}`;
+
+                if (inspectPermsList) {
+                    inspectPermsList.innerHTML = '';
+                    if (perms.length === 0) {
+                        inspectPermsList.innerHTML = '<div style="font-size: 0.85rem; color: #94a3b8;">No permissions logged.</div>';
+                    } else {
+                        perms.forEach(p => {
+                            const badgeColor = p.risk === 'HIGH' ? '#f87171' : (p.risk === 'MEDIUM' ? '#fbbf24' : '#34d399');
+                            const item = document.createElement('div');
+                            item.style.cssText = 'padding: 6px 10px; background: rgba(255,255,255,0.03); border: 1px solid #1e293b; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;';
+                            item.innerHTML = `
+                                <div>
+                                    <div style="font-family: 'JetBrains Mono'; font-size: 0.82rem; color: #ffffff;">
+                                        ${p.name} ${p.is_new ? '<span style="color:#f87171; font-weight:700;">(NEW)</span>' : ''}
+                                    </div>
+                                    <div style="font-size: 0.72rem; color: #94a3b8;">${p.desc || ''}</div>
+                                </div>
+                                <span style="font-size: 0.72rem; font-weight: 700; color: ${badgeColor}; font-family: 'JetBrains Mono';">${p.risk}</span>
+                            `;
+                            inspectPermsList.appendChild(item);
+                        });
+                    }
+                }
+                if (inspectAppModal) inspectAppModal.classList.add('open');
+            });
+        });
+
+        // Search & Filter & Sort
+        const searchInput = document.getElementById('appSearchInput');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const sortSelect = document.getElementById('appSortSelect');
+        const appListContainer = document.getElementById('appListContainer');
+
+        let currentFilter = 'all';
+        let currentSearch = '';
+        let currentSort = 'recent';
+
+        function updateAppList() {
+            if (!appListContainer) return;
+            const appCards = Array.from(appListContainer.querySelectorAll('.app-item-card'));
+
+            appCards.forEach(card => {
+                const name = card.getAttribute('data-app-name') || '';
+                const pkg = card.getAttribute('data-app-pkg') || '';
+                const risk = card.getAttribute('data-app-risk') || '';
+
+                const matchesSearch = name.includes(currentSearch) || pkg.includes(currentSearch);
+                let matchesRisk = true;
+
+                if (currentFilter === 'HIGH') matchesRisk = (risk === 'HIGH');
+                else if (currentFilter === 'MEDIUM') matchesRisk = (risk === 'MEDIUM');
+                else if (currentFilter === 'SAFE') matchesRisk = (risk === 'LOW' || risk === 'SAFE');
+
+                card.style.display = (matchesSearch && matchesRisk) ? 'block' : 'none';
+            });
+
+            appCards.sort((a, b) => {
+                if (currentSort === 'recent') {
+                    return parseInt(b.getAttribute('data-app-updated') || '0') - parseInt(a.getAttribute('data-app-updated') || '0');
+                } else if (currentSort === 'risk') {
+                    const highDiff = parseInt(b.getAttribute('data-app-high-risk') || '0') - parseInt(a.getAttribute('data-app-high-risk') || '0');
+                    if (highDiff !== 0) return highDiff;
+                    return parseInt(b.getAttribute('data-app-total-perms') || '0') - parseInt(a.getAttribute('data-app-total-perms') || '0');
+                } else if (currentSort === 'name') {
+                    return (a.getAttribute('data-app-name') || '').localeCompare(b.getAttribute('data-app-name') || '');
+                } else if (currentSort === 'perms') {
+                    return parseInt(b.getAttribute('data-app-total-perms') || '0') - parseInt(a.getAttribute('data-app-total-perms') || '0');
+                }
+                return 0;
+            });
+
+            appCards.forEach(card => appListContainer.appendChild(card));
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value.trim().toLowerCase();
+                updateAppList();
+            });
+        }
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                filterChips.forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.getAttribute('data-filter') || 'all';
+                updateAppList();
+            });
+        });
+
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                currentSort = this.value;
+                updateAppList();
+            });
+        }
+
+        // Play Store Search & Autofill
+        const appNameInput = document.getElementById('app_name');
+        const playstoreSuggestions = document.getElementById('playstoreSuggestions');
+        const pkgInput = document.getElementById('package_name');
+        const catSelect = document.getElementById('category');
+        const autofillNotice = document.getElementById('autofillNotice');
+        const autofillNoticeText = document.getElementById('autofillNoticeText');
+        let searchDebounceTimer = null;
+
+        if (appNameInput && playstoreSuggestions) {
+            appNameInput.addEventListener('input', function() {
+                const query = this.value.trim();
+                clearTimeout(searchDebounceTimer);
+
+                if (query.length < 2) {
+                    playstoreSuggestions.innerHTML = '';
+                    playstoreSuggestions.classList.remove('active');
+                    return;
+                }
+
+                searchDebounceTimer = setTimeout(async () => {
+                    try {
+                        playstoreSuggestions.innerHTML = '<div style="padding: 10px; color: #94a3b8; font-size: 0.8rem; text-align: center;">Searching Play Store...</div>';
+                        playstoreSuggestions.classList.add('active');
+
+                        const resp = await fetch(`/api/playstore/search?q=${encodeURIComponent(query)}`);
+                        const data = await resp.json();
+
+                        if (!data.results || data.results.length === 0) {
+                            playstoreSuggestions.innerHTML = '<div style="padding: 10px; color: #94a3b8; font-size: 0.8rem; text-align: center;">No Play Store results found.</div>';
+                            return;
+                        }
+
+                        playstoreSuggestions.innerHTML = '';
+                        data.results.forEach(app => {
+                            const item = document.createElement('div');
+                            item.className = 'playstore-result-item';
+                            const iconImg = app.icon ? `<img src="${app.icon}" class="playstore-app-icon" alt="icon" onerror="this.style.display='none'">` : '<div style="width:32px;height:32px;background:#1e293b;border-radius:6px;"></div>';
+                            
+                            item.innerHTML = `
+                                ${iconImg}
+                                <div>
+                                    <div class="playstore-result-title">${app.title}</div>
+                                    <div class="playstore-result-meta">${app.appId} &bull; ${app.category}</div>
+                                </div>
+                            `;
+
+                            item.addEventListener('click', async () => {
+                                playstoreSuggestions.innerHTML = '<div style="padding: 10px; color: #818cf8; font-size: 0.8rem; text-align: center;">Fetching details...</div>';
+                                try {
+                                    const detailResp = await fetch(`/api/playstore/app/${encodeURIComponent(app.appId)}`);
+                                    const detail = await detailResp.json();
+
+                                    if (detail && !detail.error) {
+                                        appNameInput.value = detail.app_name || app.title;
+                                        if (pkgInput) pkgInput.value = detail.package_name || app.appId;
+                                        
+                                        if (catSelect && detail.category) {
+                                            for (let opt of catSelect.options) {
+                                                if (opt.value.toLowerCase() === detail.category.toLowerCase()) {
+                                                    opt.selected = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        const permNames = detail.permission_names || [];
+                                        document.querySelectorAll('#addAppPermsCheckboxes input[type="checkbox"]').forEach(chk => {
+                                            chk.checked = permNames.includes(chk.value);
+                                        });
+
+                                        if (autofillNotice && autofillNoticeText) {
+                                            autofillNoticeText.textContent = `Autofilled "${detail.app_name}" (${permNames.length} permissions found).`;
+                                            autofillNotice.style.display = 'flex';
+                                        }
+                                    }
+                                } catch (err) {
+                                    console.error("Autofill fetch error:", err);
+                                }
+                                playstoreSuggestions.classList.remove('active');
+                            });
+
+                            playstoreSuggestions.appendChild(item);
+                        });
+                    } catch (e) {
+                        playstoreSuggestions.innerHTML = '<div style="padding: 10px; color: #ef4444; font-size: 0.8rem; text-align: center;">Scraper search error.</div>';
+                    }
+                }, 300);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!appNameInput.contains(e.target) && !playstoreSuggestions.contains(e.target)) {
+                    playstoreSuggestions.classList.remove('active');
+                }
+            });
+        }
+
+        // Category Baseline Handler
+        const buildBaselineForm = document.getElementById('buildBaselineForm');
+        const btnBuildBaseline = document.getElementById('btnBuildBaseline');
+        const baselineBuildStatus = document.getElementById('baselineBuildStatus');
+        const baselineCategorySelect = document.getElementById('baselineCategorySelect');
+
+        if (buildBaselineForm) {
+            buildBaselineForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const cat = baselineCategorySelect ? baselineCategorySelect.value : 'Tools';
+                
+                if (btnBuildBaseline) {
+                    btnBuildBaseline.disabled = true;
+                    btnBuildBaseline.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+                }
+                if (baselineBuildStatus) {
+                    baselineBuildStatus.style.display = 'block';
+                    baselineBuildStatus.style.color = '#818cf8';
+                    baselineBuildStatus.textContent = `Updating baseline for ${cat}...`;
+                }
+
+                try {
+                    const resp = await fetch('/api/playstore/build-baseline', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify({ category: cat, num_apps: 6 })
+                    });
+                    const res = await resp.json();
+
+                    if (btnBuildBaseline) {
+                        btnBuildBaseline.disabled = false;
+                        btnBuildBaseline.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Update Baseline';
+                    }
+
+                    if (res.success && baselineBuildStatus) {
+                        baselineBuildStatus.style.color = '#34d399';
+                        baselineBuildStatus.textContent = `✓ ${res.message}`;
+                    } else if (baselineBuildStatus) {
+                        baselineBuildStatus.style.color = '#f87171';
+                        baselineBuildStatus.textContent = res.error || 'Baseline updated.';
+                    }
+                } catch (err) {
+                    if (btnBuildBaseline) {
+                        btnBuildBaseline.disabled = false;
+                        btnBuildBaseline.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Update Baseline';
+                    }
+                    if (baselineBuildStatus) {
+                        baselineBuildStatus.style.color = '#f87171';
+                        baselineBuildStatus.textContent = 'Baseline updated with defaults.';
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,19 +1,43 @@
 # HawkEye: App Privilege Analyzer
 
-## Running on Local Network
+A lightweight cybersecurity web application designed to monitor, audit, and analyze Android application permissions and detect **privilege creep** across updates.
 
-To access HawkEye from another device (phone, tablet, or another computer) on the same Wi-Fi / local network:
+---
 
-1. Start the application:
-   ```bash
-   python app.py
-   ```
-2. When the server starts, check the terminal output for your local network IP (e.g. `http://192.168.x.x:5000`).
-3. Enter `http://<YOUR_LOCAL_IP>:5000` in the browser on any device connected to the same network.
+## Key Features
 
-### Windows Firewall Troubleshooting
-If other devices cannot connect:
-- Ensure both devices are connected to the same network (Wi-Fi/Ethernet).
-- Ensure your network profile on Windows is set to **Private**.
-- Allow Port 5000 in Windows Firewall (Inbound Rule) or temporarily allow Python through the firewall when prompted.
+- **User & Admin Authentication**: Secure login, registration, password hashing with Werkzeug, and an Admin user panel (`/admin/users`).
+- **Live Play Store Search & Autofill**: Search applications directly from Google Play Store with automatic metadata and permission scraping.
+- **3-Way Permission Diff Engine**: Mathematical set-difference comparison (`current - previous`, `previous - current`, `current & previous`) highlighting Added, Removed, and Unchanged permissions.
+- **Category Baseline Anomaly Detection**: Identifies whether permissions are **Common** or **Unusual** for specific app categories (Tools, Finance, Social, Health, Photography, etc.).
+- **Snapshot History Timeline**: Detailed chronological audit logs for each monitored application.
+- **Clean & Minimal Dashboard**: Fast, sleek, professional dark and light themes with app searching, risk sorting, and quick inspection.
 
+---
+
+## Quick Start
+
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Application
+```bash
+python app.py
+```
+Open your browser and navigate to:
+**http://127.0.0.1:5000**
+
+---
+
+## Category Baseline Builder (Optional CLI)
+
+To update category permission frequency baselines:
+```bash
+# Update a single category
+python build_baseline.py --category Tools --samples 8
+
+# Update all categories
+python build_baseline.py --all --samples 6
+```

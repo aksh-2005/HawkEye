@@ -13,7 +13,7 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Inline Theme Initializer (Prevents FOUC) -->
+    <!-- Theme Initializer -->
     <script>
         (function() {
             const savedTheme = localStorage.getItem('hawkeye_theme');
@@ -31,13 +31,8 @@
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-            -webkit-text-size-adjust: 100%;
-        }
-
         :root {
-            --bg-main: #0b0f19;
+            --bg-main: #0b1120;
             --text-main: #e2e8f0;
             --text-muted: #94a3b8;
         }
@@ -56,224 +51,59 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            position: relative;
             width: 100%;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        /* Ambient Glow Background matching Navbar Theme */
-        .bg-glow-main {
-            position: absolute;
-            width: 700px;
-            max-width: 100vw;
-            height: 700px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.14) 0%, rgba(168, 85, 247, 0.05) 50%, transparent 70%);
-            top: 0%;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 0;
-            pointer-events: none;
-            animation: pulseGlow 9s ease-in-out infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
-            100% { transform: translateX(-50%) scale(1.15); opacity: 1; }
         }
 
         /* Main Content Container */
         .content-container {
             flex: 1;
-            position: relative;
-            z-index: 1;
             width: 100%;
         }
 
-        /* Footer Component */
-        .hawkeye-footer {
-            background: rgba(15, 23, 42, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 48px 24px 24px;
-            margin-top: 80px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .footer-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 40px;
-            padding-bottom: 40px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .footer-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 14px;
-        }
-
-        .footer-brand .icon {
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .footer-desc {
-            color: #94a3b8;
-            font-size: 0.92rem;
-            line-height: 1.6;
-            max-width: 400px;
-        }
-
-        .footer-title {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .footer-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .footer-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            font-size: 0.92rem;
-            padding: 2px 0;
-            display: inline-block;
-            transition: color 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: #6366f1;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 24px auto 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: #64748b;
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .hawkeye-footer {
-                padding: 36px 20px 20px;
-                margin-top: 48px;
-            }
-
-            .footer-inner {
-                grid-template-columns: 1fr;
-                gap: 28px;
-                padding-bottom: 28px;
-            }
-
-            .footer-desc {
-                max-width: 100%;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .footer-bottom {
-                flex-direction: column;
-                text-align: center;
-                gap: 8px;
-            }
-        /* Flash Alert Notifications */
+        /* Flash Notifications */
         .flash-messages-container {
             max-width: 1200px;
-            margin: 20px auto 0;
+            margin: 16px auto 0;
             padding: 0 24px;
             width: 100%;
         }
 
         .flash-alert {
-            padding: 14px 20px;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.95rem;
+            gap: 10px;
+            font-size: 0.9rem;
             font-weight: 500;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeInDown 0.3s ease forwards;
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .flash-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.35);
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid rgba(16, 185, 129, 0.3);
             color: #34d399;
         }
 
         .flash-error, .flash-danger {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.35);
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             color: #f87171;
         }
 
         .flash-warning {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.35);
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
             color: #fbbf24;
         }
 
         .flash-info {
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.35);
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             color: #818cf8;
         }
 
-        /* Complete Premium Light Theme Design System (Desktop & Mobile) */
-        [data-theme="light"] {
-            --bg-main: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-        }
-
-        [data-theme="light"] body {
-            background-color: #f8fafc !important;
-            color: #0f172a !important;
-        }
-
-        [data-theme="light"] a {
-            color: #4f46e5;
-        }
-
-        [data-theme="light"] .bg-glow-main {
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.03) 50%, transparent 70%);
-            opacity: 0.5;
-        }
-
-        /* Light mode alerts */
-        [data-theme="light"] .flash-alert {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        }
+        /* Light Theme Alerts */
         [data-theme="light"] .flash-success {
             background: #ecfdf5;
             border-color: #a7f3d0;
@@ -295,178 +125,92 @@
             color: #4338ca;
         }
 
-        /* Footer Light Theme */
-        [data-theme="light"] .hawkeye-footer {
-            background: #f1f5f9;
-            border-top: 1px solid #e2e8f0;
+        /* Footer */
+        .hawkeye-footer {
+            background: #0f172a;
+            border-top: 1px solid #1e293b;
+            padding: 36px 24px 20px;
+            margin-top: 60px;
         }
-        [data-theme="light"] .footer-brand,
-        [data-theme="light"] .footer-title {
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.88rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: #6366f1;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 16px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.82rem;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        [data-theme="light"] .hawkeye-footer {
+            background: #ffffff;
+            border-top-color: #e2e8f0;
+        }
+        [data-theme="light"] .footer-inner {
+            border-bottom-color: #e2e8f0;
+        }
+        [data-theme="light"] .footer-brand {
             color: #0f172a;
         }
-        [data-theme="light"] .footer-desc,
-        [data-theme="light"] .footer-links a,
-        [data-theme="light"] .footer-bottom {
+        [data-theme="light"] .footer-links a {
             color: #475569;
         }
         [data-theme="light"] .footer-links a:hover {
             color: #4f46e5;
-        }
-
-        /* Desktop Light Theme Cards & Containers */
-        [data-theme="light"] .hero-preview-card,
-        [data-theme="light"] .step-card,
-        [data-theme="light"] .feature-card,
-        [data-theme="light"] .problem-section,
-        [data-theme="light"] .auth-card,
-        [data-theme="light"] .profile-header-card,
-        [data-theme="light"] .settings-card,
-        [data-theme="light"] .cta-banner {
-            background: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02) !important;
-        }
-
-        /* Desktop Light Theme Headings & Text */
-        [data-theme="light"] h1,
-        [data-theme="light"] h2,
-        [data-theme="light"] h3,
-        [data-theme="light"] h4,
-        [data-theme="light"] h5,
-        [data-theme="light"] .hero-title,
-        [data-theme="light"] .section-title,
-        [data-theme="light"] .problem-title,
-        [data-theme="light"] .step-title,
-        [data-theme="light"] .feature-title,
-        [data-theme="light"] .cta-title,
-        [data-theme="light"] .auth-title,
-        [data-theme="light"] .card-title-bar,
-        [data-theme="light"] .profile-details h1,
-        [data-theme="light"] .stat-value,
-        [data-theme="light"] .form-label,
-        [data-theme="light"] .card-app-title > div:first-child {
-            color: #0f172a !important;
-        }
-
-        [data-theme="light"] .hero-title {
-            background: linear-gradient(135deg, #0f172a 0%, #334155 60%, #475569 100%) !important;
-            -webkit-background-clip: text !important;
-            -webkit-text-fill-color: transparent !important;
-        }
-
-        [data-theme="light"] p,
-        [data-theme="light"] .hero-subtitle,
-        [data-theme="light"] .section-desc,
-        [data-theme="light"] .problem-text,
-        [data-theme="light"] .step-desc,
-        [data-theme="light"] .feature-desc,
-        [data-theme="light"] .cta-subtitle,
-        [data-theme="light"] .auth-subtitle,
-        [data-theme="light"] .profile-details p,
-        [data-theme="light"] .stat-label,
-        [data-theme="light"] .auth-footer,
-        [data-theme="light"] .remember-me,
-        [data-theme="light"] .password-hint {
-            color: #475569 !important;
-        }
-
-        /* Section Badges in Light Mode */
-        [data-theme="light"] .section-badge,
-        [data-theme="light"] .auth-badge,
-        [data-theme="light"] .role-badge {
-            background: #eef2ff !important;
-            border-color: #c7d2fe !important;
-            color: #4f46e5 !important;
-        }
-
-        /* Inputs & Form Elements in Light Mode */
-        [data-theme="light"] .form-input,
-        [data-theme="light"] .form-control {
-            background: #ffffff !important;
-            border: 1px solid #cbd5e1 !important;
-            color: #0f172a !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
-        }
-        [data-theme="light"] .form-input:focus,
-        [data-theme="light"] .form-control:focus {
-            border-color: #6366f1 !important;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
-            background: #ffffff !important;
-        }
-        [data-theme="light"] .input-icon,
-        [data-theme="light"] .toggle-password {
-            color: #64748b !important;
-        }
-        [data-theme="light"] .form-input:focus ~ .input-icon {
-            color: #4f46e5 !important;
-        }
-
-        /* Buttons & Sub-components in Light Mode */
-        [data-theme="light"] .btn-hero-primary,
-        [data-theme="light"] .btn-primary,
-        [data-theme="light"] .btn-add,
-        [data-theme="light"] .btn-auth-submit {
-            background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-            color: #ffffff !important;
-            border: none !important;
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.25) !important;
-        }
-        [data-theme="light"] .btn-hero-primary:hover,
-        [data-theme="light"] .btn-primary:hover,
-        [data-theme="light"] .btn-add:hover,
-        [data-theme="light"] .btn-auth-submit:hover {
-            background: linear-gradient(135deg, #4338ca, #4f46e5) !important;
-            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35) !important;
-        }
-
-        [data-theme="light"] .btn-hero-secondary,
-        [data-theme="light"] .btn-secondary {
-            background: #ffffff !important;
-            color: #334155 !important;
-            border: 1px solid #cbd5e1 !important;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
-        }
-        [data-theme="light"] .btn-hero-secondary:hover,
-        [data-theme="light"] .btn-secondary:hover {
-            background: #f8fafc !important;
-            color: #0f172a !important;
-            border-color: #94a3b8 !important;
-        }
-
-        [data-theme="light"] .perm-item {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-        [data-theme="light"] .perm-info span {
-            color: #1e293b !important;
-        }
-
-        [data-theme="light"] .stat-item {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-        }
-
-        [data-theme="light"] .step-num {
-            background: #eef2ff !important;
-            color: #4f46e5 !important;
-            border: 1px solid #c7d2fe !important;
-        }
-
-        [data-theme="light"] .feature-icon-wrapper {
-            background: #eef2ff !important;
-            color: #4f46e5 !important;
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <div class="bg-glow-main"></div>
-
-    <!-- Reusable Navbar Partial -->
+    <!-- Navigation Bar -->
     {% include 'navbar.html' %}
 
-    <!-- Dynamic Content -->
+    <!-- Content Container -->
     <div class="content-container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -494,36 +238,19 @@
     <!-- Footer -->
     <footer class="hawkeye-footer">
         <div class="footer-inner">
-            <div>
-                <div class="footer-brand">
-                    <span class="icon">🦅</span> HawkEye
-                </div>
-                <p class="footer-desc">
-                    App Privilege Analyzer &bull; Continuous cybersecurity monitoring for Android app permission creep, privilege escalations, and silent data exposure.
-                </p>
+            <div class="footer-brand">
+                🦅 HawkEye
             </div>
-            <div>
-                <h4 class="footer-title">Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="/login">Login</a></li>
-                    <li><a href="/register">Sign Up</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="footer-title">Project & Info</h4>
-                <ul class="footer-links">
-                    <li><a href="https://github.com" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub Repo</a></li>
-                    <li><a href="/about">About Project</a></li>
-                    <li><a href="/api/status" target="_blank">API Status</a></li>
-                </ul>
-            </div>
+            <ul class="footer-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/api/status" target="_blank">API Status</a></li>
+            </ul>
         </div>
         <div class="footer-bottom">
-            <div>&copy; 2026 HawkEye System &bull; College Cybersecurity Mini-Project</div>
-            <div>Powered by Flask &bull; Jinja2 &bull; Play Store Baseline Scraper</div>
+            <div>&copy; 2026 HawkEye System &bull; App Privilege Analyzer</div>
+            <div>Flask &bull; SQLite / PostgreSQL &bull; Play Store Baseline Scraper</div>
         </div>
     </footer>
 

@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}HawkEye — Admin User Management{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-container {
+        max-width: 1100px;
+        margin: 36px auto 60px;
+        padding: 0 24px;
+        width: 100%;
+    }
+
+    .admin-header-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .admin-title-wrap h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .admin-title-wrap p {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .admin-table-card {
+        background: #0f172a;
+        border: 1px solid #1e293b;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .admin-table-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid #1e293b;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .admin-table th {
+        padding: 14px 24px;
+        background: rgba(30, 41, 59, 0.5);
+        color: #94a3b8;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .admin-table td {
+        padding: 16px 24px;
+        color: #e2e8f0;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #1e293b;
+    }
+
+    .admin-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+        background: rgba(30, 41, 59, 0.3);
+    }
+
+    .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .badge-admin {
+        background: rgba(99, 102, 241, 0.15);
+        border: 1px solid rgba(99, 102, 241, 0.35);
+        color: #818cf8;
+    }
+
+    .badge-user {
+        background: rgba(148, 163, 184, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: #94a3b8;
+    }
+
+    [data-theme="light"] .admin-header-card,
+    [data-theme="light"] .admin-table-card {
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+    }
+
+    [data-theme="light"] .admin-title-wrap h1 {
+        color: #0f172a !important;
+    }
+
+    [data-theme="light"] .admin-title-wrap p {
+        color: #475569 !important;
+    }
+
+    [data-theme="light"] .admin-table th {
+        background: #f8fafc !important;
+        color: #475569 !important;
+        border-bottom-color: #e2e8f0 !important;
+    }
+
+    [data-theme="light"] .admin-table td {
+        color: #0f172a !important;
+        border-bottom-color: #e2e8f0 !important;
+    }
+
+    [data-theme="light"] .admin-table tr:hover td {
+        background: #f1f5f9 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header-card">
+        <div class="admin-title-wrap">
+            <h1>
+                <i class="fa-solid fa-users-gear" style="color: #6366f1;"></i> Registered Users
+            </h1>
+            <p>Admin panel &bull; Viewing all accounts registered on this HawkEye instance</p>
+        </div>
+        <div>
+            <a href="/dashboard" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="admin-table-card">
+        <div class="admin-table-header">
+            <span style="font-weight: 600; color: #ffffff;">Total Users: {{ users | length }}</span>
+        </div>
+        <div style="overflow-x: auto;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Tracked Apps</th>
+                        <th>Registered Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td style="font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: #94a3b8;">#{{ u.id }}</td>
+                        <td>
+                            <strong>{{ u.username }}</strong>
+                        </td>
+                        <td style="color: #94a3b8;">{{ u.email }}</td>
+                        <td>
+                            {% if u.is_admin %}
+                            <span class="admin-badge badge-admin">
+                                <i class="fa-solid fa-shield-halved"></i> Administrator
+                            </span>
+                            {% else %}
+                            <span class="admin-badge badge-user">
+                                <i class="fa-regular fa-user"></i> Standard User
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span style="font-family: 'JetBrains Mono'; font-weight: 600; color: #6366f1;">{{ u.apps_count }}</span> apps
+                        </td>
+                        <td style="color: #94a3b8; font-size: 0.82rem;">{{ u.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
